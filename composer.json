@@ -1,0 +1,17 @@
+{
+    "name": "themasterpage/tributecity",
+    "description": "Plugin to query tributecity.com via API for gig list data.",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Lenny Mann",
+            "email": "lenny@themasterpage.net"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {"Inc\\": "./inc"}
+    }
+}
