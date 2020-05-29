@@ -27,13 +27,13 @@
             <div class="gig-details-data"><span class="gig-details-label">State/Region/Province:</span> <?php echo $gig->region; ?></div>
             <div class="gig-details-data"><span class="gig-details-label">Country:</span> <?php echo $gig->country; ?></div>
             <div class="gig-details-data"><span class="gig-details-label">Phone:</span> <?php echo $gig->phone; ?></div>
-            <div class="gig-details-data"><span class="gig-details-label">Website:</span> <?php echo $gig->url; ?></div>
+            <div class="gig-details-data"><span class="gig-details-label">Website:</span> <a target="_new" href="<?php echo $gig->url; ?>"><?php echo $gig->url; ?></a></div>
             <div style="width: 100%; margin-top: 1.5rem;">
-                <-- Mapa Data Here -->
+                <!--  Map Data Here -->
             </div>
             <h2 style="margin-top: 1rem; margin-bottom: .5rem;">DESCRIPTION</h2>
             <div class="py-1"><?php echo $gig->description; ?></div>
         </div>
     </div>
-    <h3 style="text-align: center; margin-top: 2rem;"><a href="javascript:history.go(-1)">Return to all show listings</a>
+    <h3 style="text-align: center; margin-top: 2rem; font-size: 1rem"><a href="javascript:history.go(-1)">Return to all show listings</a>
 </div>
