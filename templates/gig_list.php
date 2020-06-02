@@ -1,3 +1,8 @@
+<?php if ($archive) : ?>
+    <h2 style="text-align: center; margin-bottom: 2rem;">Archived Show Listings</h2>
+<?php else : ?>
+    <h2 style="text-align: center; margin-bottom: 2rem;">Current Show Listings</h2>
+<?php endif ?>
 <table class="gigListTable">
     <tr>
         <th>SHOW</th>
@@ -14,3 +19,8 @@
         </tr>
     <?php endforeach ?>
 </table>
+<?php if ($archive) : ?>
+    <div style="text-align: center; margin-top: 2rem;"><a href="/<?php echo $slug ?>">Display current shows</div>
+<?php else : ?>
+    <div style="text-align: center; margin-top: 2rem;"><a href="/<?php echo $slug ?>?archive=set">Display archived shows</div>
+<?php endif ?>

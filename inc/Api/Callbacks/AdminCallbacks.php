@@ -41,6 +41,12 @@ class AdminCallbacks extends BaseController
         return $str;
     }
 
+    public function checkboxSanitize($input)
+    {
+        // return filter_var($input, FILTER_SANITIZE_NUMBER_INT);
+        return (isset($input) ? true : false);
+    }
+
     public function tributecityAdminSection()
     {
         echo 'This plugin is only valid for TributeCity Pro Account users and will not function unless you have a valid account.<p style="font-size: .65rem; font-style: italic;">* You must get the following input data (Token, Band ID) from your TributeCity.com dashboard by accessing the API Functionality manager.</p>';
@@ -58,9 +64,13 @@ class AdminCallbacks extends BaseController
         echo '<input type="text" class="regular-text" name="tributecity_band_id" value="' . $tributecityBandId . '" placeholder="Enter your TributeCity band id">';
     }
 
-    public function tributecityDetailsLinkDisplay()
+    public function checkboxField($args)
     {
-        $tributecityDetailsLink = esc_attr(get_option('tributecity_details_link'));
-        echo '<input type="text" class="regular-text" name="tributecity_details_link" value="' . $tributecityDetailsLink . '" placeholder="Enter your gig details permalink, aka gig-details">';
+        $name = $args['label_for'];
+        $classes = $args['class'];
+        $hint = $args['hint'];
+        $checkbox = get_option($name);
+        echo '<input type="checkbox" name="' . $name . '" value="1" class="' .
+            $classes . '" ' . ($checkbox ? 'checked' : '') . '><span style="font-style: italic; margin-left: 1rem;">' . $hint . '</span>';
     }
 }

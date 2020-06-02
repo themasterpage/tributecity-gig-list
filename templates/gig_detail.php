@@ -1,8 +1,11 @@
 <div class="gig-details-main">
     <!--Title-->
-    <h1 style="text-align: center; font-size: 3rem;"><?php echo $gig->band_name; ?></h1>
-    <h2 style="text-align: center; font-size: 1.2rem;"><?php echo $gig->tag_line; ?></h2>
-    <div style="margin: 2rem 0; font-size: 1rem"><?php echo $gig->gig_name . ', ' . $dateTime . ', ' .  $gig->venue_name . ', ' . $gig->city . ', ' . $gig->region; ?></div>
+    <?php $hide = get_option('tributecity_hide_title'); ?>
+    <?php if (!$hide) : ?>
+        <h1 style="text-align: center; font-size: 3rem;"><?php echo $gig->band_name; ?></h1>
+        <h2 style="text-align: center; font-size: 1.2rem;"><?php echo $gig->tag_line; ?></h2>
+    <?php endif ?>
+    <h3 style="margin: 1rem 0; font-size: 1rem; text-align: center"><?php echo $gig->gig_name . ', ' . $dateTime . ', ' .  $gig->venue_name . ', ' . $gig->city . ', ' . $gig->region; ?></h3>
     <div style="display: flex; flex-wrap: wrap; margin: .75rem 1.5rem;">
         <div class="gig-details-col1">
             <img src="<?php echo $imgServer . $gig->poster; ?>">

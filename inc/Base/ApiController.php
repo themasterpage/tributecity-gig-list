@@ -26,25 +26,30 @@ class ApiController extends BaseController
         $atts = shortcode_atts(
             array(
                 'gig_id' => isset($_GET['gig_id']) ? sanitize_key($_GET['gig_id']) : '',
+                'archive' => isset($_GET['archive']) ? true : false,
             ),
             $atts,
             'tributecity-gigs'
         );
 
         $gigId = ($atts['gig_id']) ? $atts['gig_id'] : null;
+        $archive = $atts['archive'];
 
-        $data = TributeCityApi::getApiData($gigId);
+        // If archive is set, then it is a list function mode
+        $option = ($archive) ? 'set' : $gigId;
+
+        $data = TributeCityApi::getApiData($option);
 
         if (!empty($gigId)) {
             // Call gig details output
             return $this->createGigDetail($data);
         } else {
             // Call gig list output
-            return $this->createGigList($data);
+            return $this->createGigList($data, $archive);
         }
     }
 
-    public function createGigList($data)
+    public function createGigList($data, $archive)
     {
         if ($data) {
             // Get the queried object and sanitize it

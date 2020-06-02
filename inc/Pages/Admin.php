@@ -13,6 +13,7 @@ use Inc\Api\Callbacks\AdminCallbacks;
 class Admin extends BaseController
 {
     public $callbacks;
+
     public $settings;
     public $pages;
     public $subpages;
@@ -22,11 +23,12 @@ class Admin extends BaseController
         $this->settings = new SettingsApi();
         $this->callbacks = new AdminCallbacks();
         $this->setPages();
-        $this->setSubpages();
+        // $this->setSubpages();
         $this->setSettings();
         $this->setSections();
         $this->setFields();
-        $this->settings->addPages($this->pages)->withSubPage('Token')->addSubPages($this->subpages)->register();
+        // $this->settings->addPages($this->pages)->withSubPage('Token')->addSubPages($this->subpages)->register();
+        $this->settings->addPages($this->pages)->withSubPage('Token')->register();
     }
 
     public function setPages()
@@ -62,19 +64,19 @@ class Admin extends BaseController
     {
         $args = array(
             array(
-                'option_group' => 'tributecity_options_group',
+                'option_group' => 'tributecity_plugin_settings',
                 'option_name' => 'tributecity_token',
                 'callback' => array($this->callbacks, 'textSanitize')
             ),
             array(
-                'option_group' => 'tributecity_options_group',
+                'option_group' => 'tributecity_plugin_settings',
                 'option_name' => 'tributecity_band_id',
                 'callback' => array($this->callbacks, 'intSanitize')
             ),
             array(
-                'option_group' => 'tributecity_options_group',
-                'option_name' => 'tributecity_details_link',
-                'callback' => array($this->callbacks, 'linkSanitize')
+                'option_group' => 'tributecity_plugin_settings',
+                'option_name' => 'tributecity_hide_title',
+                'callback' => array($this->callbacks, 'checkboxSanitize')
             )
         );
         $this->settings->setSettings($args);
@@ -119,14 +121,15 @@ class Admin extends BaseController
                 )
             ),
             array(
-                'id' => 'tributecity_details_link',
-                'title' => 'Gig Details Permalink',
-                'callback' => array($this->callbacks, 'tributecityDetailsLinkDisplay'),
+                'id' => 'tributecity_hide_title',
+                'title' => 'Hide Band Name',
+                'callback' => array($this->callbacks, 'checkboxField'),
                 'page' => 'tributecity_plugin',
                 'section' => 'tributecity_admin_index',
                 'args' => array(
-                    'label_for' => 'tributecity_details_link',
-                    'class' => 'example-class'
+                    'label_for' => 'tributecity_hide_title',
+                    'class' => 'ui-toggle',
+                    'hint' => 'Hide your band name title if your page already displays it.'
                 )
             ),
         );
