@@ -12,7 +12,7 @@ class AdminCallbacks extends BaseController
 {
     public function adminToken()
     {
-        return require_once("$this->plugin_path/templates/admin_token.php");
+        return require_once("$this->plugin_path/templates/admin_settings.php");
     }
 
     public function adminStyles()

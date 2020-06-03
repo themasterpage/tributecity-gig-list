@@ -8,14 +8,18 @@
         <th>SHOW</th>
         <th>DATE</th>
         <th>LOCATION</th>
-        <th>DETAILS</th>
+        <?php if (!$archive) : ?>
+            <th>DETAILS</th>
+        <?php endif ?>
     </tr>
     <?php foreach ($data as $gig) : ?>
         <tr>
             <td> <?php echo $gig->gig_name; ?></td>
             <td> <?php echo date("{$date_format}", strtotime($gig->start_date)); ?></td>
-            <td> <?php echo $gig->city . ', ' . $gig->region; ?></td>
-            <td><a href="/ <?php echo $slug . '?gig_id=' . $gig->gig_id ?>">view</td>
+            <td> <?php echo $gig->city . ', ' . $gig->region . ', ' . $gig->country ?></td>
+            <?php if (!$archive) : ?>
+                <td><a href="/ <?php echo $slug . '?gig_id=' . $gig->gig_id ?>">view</td>
+            <?php endif ?>
         </tr>
     <?php endforeach ?>
 </table>

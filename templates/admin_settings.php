@@ -18,7 +18,7 @@
                 </form>
             </div>
             <div id="tab-2" class="tab-pane">
-                <h1>Hello There in tab 2</h1>
+                <?php include_once("$this->plugin_path/templates/about.php"); ?>
             </div>
         </div>
 
