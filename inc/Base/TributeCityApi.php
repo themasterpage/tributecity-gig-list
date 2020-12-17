@@ -10,7 +10,7 @@ class TributeCityApi
 {
     public static function getApiData($options = null)
     {
-        $remote_url = 'http://tributecity.test/api/gig';
+        $remote_url = 'https://tributecity.test/api/gig';
         $bandId = get_option('tributecity_band_id');
         $idToken = get_option('tributecity_token');
         $args = array(
@@ -22,12 +22,15 @@ class TributeCityApi
                 'band_id' => $bandId
             )
         );
-        // If band_id, merge into array
-        if (is_int($options)) {
-            $args['body']['gig_id'] = $options;
+
+        if ($options['gigid']) {
+            $args['body']['gig_id'] = $options['gigid'];
         }
-        if (is_string($options) && $options == 'set') {
-            $args['body']['archive'] = $options;
+        if ($options['archive']) {
+            $args['body']['archive'] = $options['archive'];
+        }
+        if ($options['limit']) {
+            $args['body']['limit'] = $options['limit'];
         }
 
         $request = wp_remote_post($remote_url, $args);

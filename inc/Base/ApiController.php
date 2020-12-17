@@ -21,53 +21,48 @@ class ApiController extends BaseController
         add_shortcode('tributecity-gigs', array($this, 'processGigsApi'));
     }
 
-    public function processGigsApi($atts = array(), $content = null)
+    public function processGigsApi($atts = array())
     {
-        $atts = shortcode_atts(
+        $args = shortcode_atts(
             array(
-                'gig_id' => isset($_GET['gig_id']) ? sanitize_key($_GET['gig_id']) : '',
+                'gig_id' => isset($_GET['gig_id']) ? sanitize_key($_GET['gig_id']) : false,
                 'archive' => isset($_GET['archive']) ? true : false,
+                'limit' => isset($atts['limit']) && is_int($atts['limit']) ? $atts['limit'] : false
             ),
             $atts,
             'tributecity-gigs'
         );
 
-        $gigId = ($atts['gig_id']) ? $atts['gig_id'] : null;
-        $archive = $atts['archive'];
+        $options = array();
+        $options['gigid'] = $args['gig_id'];
+        $options['archive'] = $args['archive'];
+        $options['limit'] = $args['limit'];
 
-        // If archive is set, then it is a list function mode
-        $option = ($archive) ? 'set' : $gigId;
-
-        $data = TributeCityApi::getApiData($option);
+        $data = TributeCityApi::getApiData($options);
 
         if (!empty($gigId)) {
             // Call gig details output
             return $this->createGigDetail($data);
         } else {
             // Call gig list output
-            return $this->createGigList($data, $archive);
+            return $this->createGigList($data, $options);
         }
     }
 
-    public function createGigList($data, $archive)
+    public function createGigList($data, $options)
     {
-        if ($data) {
-            // Get the queried object and sanitize it
-            $current_page = sanitize_post($GLOBALS['wp_the_query']->get_queried_object());
-            // Get the page slug
-            $slug = $current_page->post_name;
-            $date_format = get_option('date_format');
-            $time_format = get_option('time_format');
-            $gig_list_link = get_option('tributecity_details_link');
+        // Get the queried object and sanitize it
+        $current_page = sanitize_post($GLOBALS['wp_the_query']->get_queried_object());
+        // Get the page slug
+        $slug = $current_page->post_name;
+        $date_format = get_option('date_format');
+        $time_format = get_option('time_format');
+        $gig_list_link = get_option('tributecity_details_link');
 
-            ob_start();
-            require_once("$this->plugin_path/templates/gig_list.php");
-            $output = ob_get_clean();
-
-            return $output;
-        } else {
-            return '<h2>No current shows available</h2>';
-        }
+        ob_start();
+        require_once("$this->plugin_path/templates/gig_list.php");
+        $output = ob_get_clean();
+        return $output;
     }
 
 

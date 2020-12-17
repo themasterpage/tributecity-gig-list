@@ -20,7 +20,8 @@ final class Init
             Pages\Admin::class,
             Base\Enqueue::class,
             Base\SettingsLinks::class,
-            Base\ApiController::class
+            Base\ApiController::class,
+            // Base\WidgetController::class,
         ];
     }
 

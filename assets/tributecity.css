@@ -65,7 +65,7 @@
     color: #718096;
     padding: 1rem, 1.5rem;
     border-bottom: 1px solid #718096;
-    background-color: #f7fafc;
+    background-color: #9a9b9c;
     letter-spacing: .025em;
 } 
 .gigListTable td {
@@ -74,7 +74,7 @@
 }
 /* Define the hover highlight color for the table row */
 .gigListTable tr:hover {
-        background-color: #edf2f7;
+        background-color: #c0c2c5;
 }
 
 .text-blue-800 {
