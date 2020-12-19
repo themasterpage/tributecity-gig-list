@@ -6,7 +6,7 @@
 Plugin Name: TributeCity Gig List
 Plugin URI:  http://tributecity.com 
 Description: This widget will call via API, tributecity.com for all shows by a band
-Version:     1.0
+Version:     1.1
 Author:      Lenny Mann
 Author URI:  https://themasterpage.net 
 License:     GPL2 etc

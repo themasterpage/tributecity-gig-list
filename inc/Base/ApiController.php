@@ -40,7 +40,7 @@ class ApiController extends BaseController
 
         $data = TributeCityApi::getApiData($options);
 
-        if (!empty($gigId)) {
+        if (!empty($options['gigid'])) {
             // Call gig details output
             return $this->createGigDetail($data);
         } else {
@@ -68,8 +68,7 @@ class ApiController extends BaseController
 
     public function createGigDetail($data)
     {
-        //TODO: This needs to be updated on production
-        $imgServer = 'https://tributecity.test/media/';
+        $imgServer = 'https://tributecity.com/media/';
         if (!$data) {
             return false;
         }

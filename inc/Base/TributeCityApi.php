@@ -10,7 +10,7 @@ class TributeCityApi
 {
     public static function getApiData($options = null)
     {
-        $remote_url = 'https://tributecity.test/api/gig';
+        $remote_url = 'https://tributecity.com/api/gig';
         $bandId = get_option('tributecity_band_id');
         $idToken = get_option('tributecity_token');
         $args = array(
