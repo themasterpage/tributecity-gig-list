@@ -1,5 +1,5 @@
 <?php if (!$options['archive'] && !$options['limit'] > 0) : ?>
-    <?php if ($archive) : ?>
+    <?php if ($options['archive']) : ?>
         <h2 style="text-align: center; margin-bottom: 2rem;">Archived Show Listings</h2>
     <?php else : ?>
         <h2 style="text-align: center; margin-bottom: 2rem;">Current Show Listings</h2>
