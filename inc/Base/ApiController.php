@@ -77,7 +77,7 @@ class ApiController extends BaseController
         $time_format = get_option('time_format');
         $extended = (empty($gig->end_date)) ? '' : ' - ' . date("{$date_format}", strtotime($gig->end_date));
         $dateTime = date("{$date_format}", strtotime($gig->start_date)) . $extended . ', ' . date("{$time_format}", strtotime($gig->start_time));
-        $price = self::_getDisplayPrice($gig->price, $gig->sold_out, $gig->free);
+        $gig->price = self::_getDisplayPrice($gig->price, $gig->sold_out, $gig->free);
 
         ob_start();
         require_once("$this->plugin_path/templates/gig_detail.php");
