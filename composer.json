@@ -1,17 +1,26 @@
 {
-    "name": "themasterpage/tributecity",
-    "description": "Plugin to query tributecity.com via API for gig list data.",
-    "type": "project",
-    "license": "GPL",
-    "authors": [
-        {
-            "name": "Lenny Mann",
-            "email": "lenny@themasterpage.net"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {},
-    "autoload": {
-        "psr-4": {"Inc\\": "./inc"}
-    }
+	"name": "themasterpage/tributecity-gig-list",
+	"description": "WordPress plugin to display TributeCity Pro band gig listings via shortcode.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Lenny Mann",
+			"email": "lenny@themasterpage.net",
+			"homepage": "https://themasterpage.net"
+		}
+	],
+	"require": {
+		"php": ">=7.4"
+	},
+	"autoload": {
+		"psr-4": {
+			"TributeCity\\GigList\\": "inc/"
+		}
+	},
+	"config": {
+		"optimize-autoloader": true,
+		"sort-packages": true
+	},
+	"minimum-stability": "stable"
 }

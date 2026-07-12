@@ -1,0 +1,190 @@
+/**
+ * Public styles for TributeCity Gig List shortcode output.
+ */
+
+.tributecity-gig-list {
+	margin: 1.5rem 0;
+	width: 100%;
+}
+
+.tributecity-gig-list__heading {
+	text-align: center;
+	margin: 0 0 1.5rem;
+	font-size: 1.25rem;
+}
+
+.tributecity-gig-list__empty {
+	text-align: center;
+	margin: 1rem 0 2rem;
+}
+
+.tributecity-gig-list__table-wrap {
+	width: 100%;
+	overflow-x: auto;
+}
+
+.tributecity-gig-list__table {
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
+	border: none;
+}
+
+.tributecity-gig-list__table th {
+	text-transform: uppercase;
+	font-weight: 700;
+	font-size: 0.875rem;
+	color: #1d2327;
+	padding: 0.75rem 1rem;
+	border-bottom: 2px solid #c3c4c7;
+	background-color: #f0f0f1;
+	letter-spacing: 0.025em;
+}
+
+.tributecity-gig-list__table td {
+	font-size: 0.9375rem;
+	padding: 0.75rem 1rem;
+	border-bottom: 1px solid #dcdcde;
+	vertical-align: top;
+}
+
+.tributecity-gig-list__table tbody tr:hover {
+	background-color: #f6f7f7;
+}
+
+.tributecity-gig-list__archive-toggle {
+	text-align: center;
+	margin-top: 1.5rem;
+}
+
+.tributecity-gig-list__credit {
+	text-align: right;
+	width: 100%;
+	font-size: 0.75rem;
+	margin-top: 1.5rem;
+	opacity: 0.85;
+}
+
+/* Detail view */
+.tributecity-gig-list__band-name {
+	text-align: center;
+	font-size: 2rem;
+	margin: 0 0 0.25rem;
+}
+
+.tributecity-gig-list__tagline {
+	text-align: center;
+	font-size: 1.1rem;
+	margin: 0 0 1rem;
+}
+
+.tributecity-gig-list__subtitle {
+	text-align: center;
+	font-size: 1rem;
+	margin: 0 0 1.5rem;
+}
+
+.tributecity-gig-list__detail-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	margin: 0.75rem 0;
+}
+
+.tributecity-gig-list__detail-media {
+	flex: 1 1 100%;
+	min-width: 0;
+}
+
+.tributecity-gig-list__detail-info {
+	flex: 1 1 100%;
+	min-width: 0;
+}
+
+.tributecity-gig-list__poster {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+.tributecity-gig-list__external-links {
+	list-style: none;
+	margin: 1rem 0 0;
+	padding: 0;
+}
+
+.tributecity-gig-list__external-links li {
+	margin: 0.35rem 0;
+}
+
+.tributecity-gig-list__section-title {
+	margin: 0 0 0.75rem;
+	font-size: 1.1rem;
+}
+
+.tributecity-gig-list__meta {
+	margin: 0 0 1.5rem;
+}
+
+.tributecity-gig-list__meta > div {
+	display: grid;
+	grid-template-columns: minmax(6rem, 8rem) 1fr;
+	gap: 0.5rem 1rem;
+	margin: 0.35rem 0;
+}
+
+.tributecity-gig-list__meta dt {
+	font-weight: 700;
+	margin: 0;
+}
+
+.tributecity-gig-list__meta dd {
+	margin: 0;
+}
+
+.tributecity-gig-list__description {
+	margin-bottom: 1.5rem;
+}
+
+.tributecity-gig-list__back {
+	text-align: center;
+	margin-top: 2rem;
+}
+
+@media only screen and (min-width: 768px) {
+	.tributecity-gig-list__detail-media {
+		flex: 1 1 38%;
+	}
+
+	.tributecity-gig-list__detail-info {
+		flex: 1 1 55%;
+	}
+}
+
+/* Stack table on small screens for readability */
+@media only screen and (max-width: 600px) {
+	.tributecity-gig-list__table thead {
+		display: none;
+	}
+
+	.tributecity-gig-list__table tr {
+		display: block;
+		margin-bottom: 1rem;
+		border: 1px solid #dcdcde;
+		padding: 0.5rem;
+	}
+
+	.tributecity-gig-list__table td {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		border-bottom: 1px solid #f0f0f1;
+		padding: 0.5rem 0.25rem;
+	}
+
+	.tributecity-gig-list__table td::before {
+		content: attr(data-label);
+		font-weight: 700;
+		flex: 0 0 35%;
+	}
+}

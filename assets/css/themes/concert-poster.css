@@ -1,0 +1,115 @@
+/**
+ * Theme: Concert Poster — bold rock-poster energy.
+ */
+
+.tributecity-gig-list--theme-concert-poster {
+	--tcgl-bg: #1a0a0a;
+	--tcgl-ink: #fff8e7;
+	--tcgl-accent: #e8c547;
+	--tcgl-gold: #e8c547;
+	--tcgl-line: #5a2028;
+	--tcgl-accent-soft: rgba(232, 197, 71, 0.14);
+	padding: 1.75rem 1.25rem;
+	background:
+		radial-gradient(ellipse at top, #3a1018 0%, #1a0a0a 55%),
+		#1a0a0a;
+	color: var(--tcgl-ink);
+	border: 3px solid var(--tcgl-gold);
+	box-shadow: 0 0 0 4px #1a0a0a, 0 0 0 6px var(--tcgl-accent);
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__heading {
+	font-size: 1.6rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	color: var(--tcgl-gold);
+	text-shadow: 0 2px 0 #000;
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__table {
+	border: 2px solid var(--tcgl-line);
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__table th {
+	text-transform: uppercase;
+	font-size: 0.8rem;
+	letter-spacing: 0.15em;
+	font-weight: 800;
+	color: var(--tcgl-gold);
+	background: #2a0f12;
+	border-bottom: 2px solid var(--tcgl-accent);
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__table td {
+	border-bottom: 1px solid var(--tcgl-line);
+	font-weight: 600;
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__table tbody tr:hover {
+	background: rgba(196, 30, 58, 0.15);
+}
+
+.tributecity-gig-list--theme-concert-poster a {
+	color: var(--tcgl-gold);
+	font-weight: 700;
+	text-decoration: underline;
+	text-underline-offset: 0.15em;
+}
+
+.tributecity-gig-list--theme-concert-poster a:hover,
+.tributecity-gig-list--theme-concert-poster a:focus {
+	color: #fff;
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__band-name {
+	font-size: 2.4rem;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--tcgl-gold);
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__tagline {
+	font-style: italic;
+	color: var(--tcgl-ink);
+	opacity: 0.9;
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__section-title {
+	text-transform: uppercase;
+	letter-spacing: 0.16em;
+	color: var(--tcgl-accent);
+	border-bottom: 2px solid var(--tcgl-gold);
+	display: inline-block;
+	padding-bottom: 0.25rem;
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__poster {
+	border: 2px solid var(--tcgl-gold);
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__card {
+	border: 2px solid var(--tcgl-line);
+	background: rgba(0, 0, 0, 0.35);
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__card-date,
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__stack-date {
+	color: var(--tcgl-gold);
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__card-title {
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__stack-item {
+	border-bottom-color: var(--tcgl-line);
+}
+
+@media only screen and (max-width: 600px) {
+	.tributecity-gig-list--theme-concert-poster .tributecity-gig-list__table tr {
+		border: 1px solid var(--tcgl-line);
+	}
+}

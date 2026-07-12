@@ -1,0 +1,155 @@
+/**
+ * Theme: Soft Cards — modern rounded marketing-site cards.
+ */
+
+.tributecity-gig-list--theme-soft-cards {
+	--tcgl-bg: #f8fafc;
+	--tcgl-card: #ffffff;
+	--tcgl-text: #0f172a;
+	--tcgl-muted: #64748b;
+	--tcgl-accent: #4f46e5;
+	--tcgl-accent-soft: #eef2ff;
+	--tcgl-border: #e2e8f0;
+	--tcgl-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+	--tcgl-row-border: #e2e8f0;
+	padding: 1.25rem;
+	border-radius: 16px;
+	background: var(--tcgl-bg);
+	color: var(--tcgl-text);
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__heading {
+	font-size: 1.35rem;
+	font-weight: 700;
+	color: var(--tcgl-text);
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__table-wrap {
+	background: var(--tcgl-card);
+	border: 1px solid var(--tcgl-border);
+	border-radius: 14px;
+	box-shadow: var(--tcgl-shadow);
+	overflow: hidden;
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__table th {
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--tcgl-muted);
+	background: #f1f5f9;
+	border-bottom: 1px solid var(--tcgl-border);
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__table td {
+	border-bottom: 1px solid var(--tcgl-border);
+	color: var(--tcgl-text);
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__table tbody tr:last-child td {
+	border-bottom: none;
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__table tbody tr:hover {
+	background: var(--tcgl-accent-soft);
+}
+
+.tributecity-gig-list--theme-soft-cards a {
+	color: var(--tcgl-accent);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.tributecity-gig-list--theme-soft-cards a:hover,
+.tributecity-gig-list--theme-soft-cards a:focus {
+	text-decoration: underline;
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__band-name {
+	font-size: 2rem;
+	font-weight: 800;
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__tagline {
+	color: var(--tcgl-muted);
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__detail-grid {
+	background: var(--tcgl-card);
+	border: 1px solid var(--tcgl-border);
+	border-radius: 14px;
+	box-shadow: var(--tcgl-shadow);
+	padding: 1.25rem;
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__section-title {
+	color: var(--tcgl-text);
+	font-weight: 700;
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__poster {
+	border-radius: 12px;
+	box-shadow: var(--tcgl-shadow);
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__archive-toggle a,
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__back a {
+	display: inline-block;
+	padding: 0.55rem 1rem;
+	border-radius: 999px;
+	background: var(--tcgl-accent);
+	color: #fff;
+	text-decoration: none;
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__archive-toggle a:hover,
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__back a:hover {
+	filter: brightness(1.05);
+	text-decoration: none;
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__card {
+	background: var(--tcgl-card);
+	border-color: var(--tcgl-border);
+	border-radius: 14px;
+	box-shadow: var(--tcgl-shadow);
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__card-date {
+	color: var(--tcgl-accent);
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__card-link {
+	display: inline-block;
+	padding: 0.45rem 0.9rem;
+	border-radius: 999px;
+	background: var(--tcgl-accent);
+	color: #fff;
+	text-decoration: none;
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__stack-item {
+	background: var(--tcgl-card);
+	border: 1px solid var(--tcgl-border);
+	border-radius: 12px;
+	box-shadow: var(--tcgl-shadow);
+	padding: 1rem 1.1rem;
+	margin-bottom: 0.75rem;
+}
+
+.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__stack-date {
+	color: var(--tcgl-accent);
+}
+
+@media only screen and (max-width: 600px) {
+	.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__table-wrap {
+		overflow: visible;
+	}
+
+	.tributecity-gig-list--theme-soft-cards .tributecity-gig-list__table tr {
+		border: none;
+		margin: 0;
+		padding: 0.75rem 1rem;
+		border-bottom: 1px solid var(--tcgl-border);
+	}
+}

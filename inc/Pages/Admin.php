@@ -1,138 +1,265 @@
 <?php
+/**
+ * Admin settings page configuration.
+ *
+ * @package TributeCityGigList
+ */
 
-namespace Inc\Pages;
+namespace TributeCity\GigList\Pages;
 
-use Inc\Base\BaseController;
-use Inc\Api\SettingsApi;
-use Inc\Api\Callbacks\AdminCallbacks;
+use TributeCity\GigList\Api\Callbacks\AdminCallbacks;
+use TributeCity\GigList\Api\SettingsApi;
+use TributeCity\GigList\Base\BaseController;
+use TributeCity\GigList\Base\StyleManager;
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * @package TributeCityGigList
- *
+ * Configures the TributeCity admin menu and Settings API fields.
  */
-class Admin extends BaseController
-{
-    public $callbacks;
+class Admin extends BaseController {
 
-    public $settings;
-    public $pages;
-    public $subpages;
+	/**
+	 * Settings API helper.
+	 *
+	 * @var SettingsApi
+	 */
+	public SettingsApi $settings;
 
-    public function register()
-    {
-        $this->settings = new SettingsApi();
-        $this->callbacks = new AdminCallbacks();
-        $this->setPages();
-        // $this->setSubpages();
-        $this->setSettings();
-        $this->setSections();
-        $this->setFields();
-        // $this->settings->addPages($this->pages)->withSubPage('Token')->addSubPages($this->subpages)->register();
-        $this->settings->addPages($this->pages)->withSubPage('Token')->register();
-    }
+	/**
+	 * Admin field callbacks.
+	 *
+	 * @var AdminCallbacks
+	 */
+	public AdminCallbacks $callbacks;
 
-    public function setPages()
-    {
-        $this->pages = array(
-            array(
-                'page_title' => 'TributeCity Plugin Settings',
-                'menu_title' => 'TributeCity API',
-                'capability' => 'administrator',
-                'menu_slug' => 'tributecity_plugin',
-                'callback' => array($this->callbacks, 'adminToken'),
-                'icon_url' => 'dashicons-playlist-audio',
-                'position' => 110
-            )
-        );
-    }
+	/**
+	 * Top-level pages.
+	 *
+	 * @var array<int, array<string, mixed>>
+	 */
+	public array $pages = array();
 
-    public function setSubpages()
-    {
-        $this->subpages = array(
-            array(
-                'parent_slug' => 'tributecity_plugin',
-                'page_title' => 'Custom Font Styles',
-                'menu_title' => 'Styles',
-                'capability' => 'administrator',
-                'menu_slug' => 'tributecity_style',
-                'callback' => array($this->callbacks, 'adminStyles')
-            )
-        );
-    }
+	/**
+	 * Wire settings registration.
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+		$this->settings  = new SettingsApi();
+		$this->callbacks = new AdminCallbacks();
 
-    public function setSettings()
-    {
-        $args = array(
-            array(
-                'option_group' => 'tributecity_plugin_settings',
-                'option_name' => 'tributecity_token',
-                'callback' => array($this->callbacks, 'textSanitize')
-            ),
-            array(
-                'option_group' => 'tributecity_plugin_settings',
-                'option_name' => 'tributecity_band_id',
-                'callback' => array($this->callbacks, 'intSanitize')
-            ),
-            array(
-                'option_group' => 'tributecity_plugin_settings',
-                'option_name' => 'tributecity_hide_title',
-                'callback' => array($this->callbacks, 'checkboxSanitize')
-            )
-        );
-        $this->settings->setSettings($args);
-    }
+		$this->set_pages();
+		$this->set_settings();
+		$this->set_sections();
+		$this->set_fields();
 
-    public function setSections()
-    {
-        $args = array(
-            array(
-                'id' => 'tributecity_admin_index',
-                'title' => 'API Settings',
-                'callback' => array($this->callbacks, 'tributecityAdminSection'),
-                'page' => 'tributecity_plugin'
-            )
-        );
-        $this->settings->setSections($args);
-    }
+		$this->settings
+			->add_pages( $this->pages )
+			->with_sub_page( __( 'Settings', 'tributecity-gig-list' ) )
+			->register();
+	}
 
-    public function setFields()
-    {
-        $args = array(
-            array(
-                'id' => 'tributecity_token',
-                'title' => 'Token *',
-                'callback' => array($this->callbacks, 'tributecityTokenDisplay'),
-                'page' => 'tributecity_plugin',
-                'section' => 'tributecity_admin_index',
-                'args' => array(
-                    'label_for' => 'tributecity_token',
-                    'class' => 'example-class'
-                )
-            ),
-            array(
-                'id' => 'tributecity_band_id',
-                'title' => 'Band ID *',
-                'callback' => array($this->callbacks, 'tributecityBandDisplay'),
-                'page' => 'tributecity_plugin',
-                'section' => 'tributecity_admin_index',
-                'args' => array(
-                    'label_for' => 'tributecity_band_id',
-                    'class' => 'example-class'
-                )
-            ),
-            array(
-                'id' => 'tributecity_hide_title',
-                'title' => 'Hide Band Name',
-                'callback' => array($this->callbacks, 'checkboxField'),
-                'page' => 'tributecity_plugin',
-                'section' => 'tributecity_admin_index',
-                'args' => array(
-                    'label_for' => 'tributecity_hide_title',
-                    'class' => 'ui-toggle',
-                    'hint' => 'Hide your band name title if your page already displays it.'
-                )
-            ),
-        );
-        $this->settings->setFields($args);
-    }
+	/**
+	 * Define top-level menu page.
+	 *
+	 * @return void
+	 */
+	public function set_pages(): void {
+		$this->pages = array(
+			array(
+				'page_title' => __( 'TributeCity Gig List', 'tributecity-gig-list' ),
+				'menu_title' => __( 'TributeCity Gigs', 'tributecity-gig-list' ),
+				'capability' => 'manage_options',
+				'menu_slug'  => 'tributecity-gig-list',
+				'callback'   => array( $this->callbacks, 'render_settings_page' ),
+				'icon_url'   => 'dashicons-playlist-audio',
+				'position'   => 110,
+			),
+		);
+	}
+
+	/**
+	 * Register option settings with sanitization callbacks.
+	 *
+	 * @return void
+	 */
+	public function set_settings(): void {
+		$args = array(
+			array(
+				'option_group' => 'tributecity_gig_list_settings',
+				'option_name'  => 'tributecity_token',
+				'callback'     => array( $this->callbacks, 'sanitize_text' ),
+				'default'      => '',
+			),
+			array(
+				'option_group' => 'tributecity_gig_list_settings',
+				'option_name'  => 'tributecity_band_id',
+				'callback'     => array( $this->callbacks, 'sanitize_band_id' ),
+				'default'      => '',
+			),
+			array(
+				'option_group' => 'tributecity_gig_list_settings',
+				'option_name'  => 'tributecity_hide_title',
+				'callback'     => array( $this->callbacks, 'sanitize_checkbox' ),
+				'default'      => 0,
+			),
+			array(
+				'option_group' => 'tributecity_gig_list_settings',
+				'option_name'  => 'tributecity_show_credit',
+				'callback'     => array( $this->callbacks, 'sanitize_checkbox' ),
+				'default'      => 0,
+			),
+			array(
+				'option_group' => 'tributecity_gig_list_styling',
+				'option_name'  => StyleManager::OPTION_USE_THEME,
+				'callback'     => array( $this->callbacks, 'sanitize_checkbox' ),
+				'default'      => 0,
+			),
+			array(
+				'option_group' => 'tributecity_gig_list_styling',
+				'option_name'  => StyleManager::OPTION_STYLE_THEME,
+				'callback'     => array( $this->callbacks, 'sanitize_style_theme' ),
+				'default'      => StyleManager::DEFAULT_THEME,
+			),
+			array(
+				'option_group' => 'tributecity_gig_list_styling',
+				'option_name'  => StyleManager::OPTION_LAYOUT,
+				'callback'     => array( $this->callbacks, 'sanitize_list_layout' ),
+				'default'      => StyleManager::DEFAULT_LAYOUT,
+			),
+			array(
+				'option_group' => 'tributecity_gig_list_styling',
+				'option_name'  => StyleManager::OPTION_FONT_SIZE,
+				'callback'     => array( $this->callbacks, 'sanitize_font_size' ),
+				'default'      => StyleManager::DEFAULT_FONT_SIZE,
+			),
+		);
+
+		$this->settings->set_settings( $args );
+	}
+
+	/**
+	 * Register settings sections.
+	 *
+	 * @return void
+	 */
+	public function set_sections(): void {
+		$args = array(
+			array(
+				'id'       => 'tributecity_gig_list_api',
+				'title'    => __( 'API credentials', 'tributecity-gig-list' ),
+				'callback' => array( $this->callbacks, 'section_api' ),
+				'page'     => 'tributecity-gig-list',
+			),
+			array(
+				'id'       => 'tributecity_gig_list_display',
+				'title'    => __( 'Display options', 'tributecity-gig-list' ),
+				'callback' => array( $this->callbacks, 'section_display' ),
+				'page'     => 'tributecity-gig-list',
+			),
+			array(
+				'id'       => 'tributecity_gig_list_styling',
+				'title'    => __( 'Appearance', 'tributecity-gig-list' ),
+				'callback' => array( $this->callbacks, 'section_styling' ),
+				'page'     => 'tributecity-gig-list-styling',
+			),
+		);
+
+		$this->settings->set_sections( $args );
+	}
+
+	/**
+	 * Register settings fields.
+	 *
+	 * @return void
+	 */
+	public function set_fields(): void {
+		$args = array(
+			array(
+				'id'       => 'tributecity_token',
+				'title'    => __( 'API token', 'tributecity-gig-list' ),
+				'callback' => array( $this->callbacks, 'field_token' ),
+				'page'     => 'tributecity-gig-list',
+				'section'  => 'tributecity_gig_list_api',
+				'args'     => array(
+					'label_for' => 'tributecity_token',
+				),
+			),
+			array(
+				'id'       => 'tributecity_band_id',
+				'title'    => __( 'Band ID', 'tributecity-gig-list' ),
+				'callback' => array( $this->callbacks, 'field_band_id' ),
+				'page'     => 'tributecity-gig-list',
+				'section'  => 'tributecity_gig_list_api',
+				'args'     => array(
+					'label_for' => 'tributecity_band_id',
+				),
+			),
+			array(
+				'id'       => 'tributecity_hide_title',
+				'title'    => __( 'Hide band name', 'tributecity-gig-list' ),
+				'callback' => array( $this->callbacks, 'field_checkbox' ),
+				'page'     => 'tributecity-gig-list',
+				'section'  => 'tributecity_gig_list_display',
+				'args'     => array(
+					'label_for' => 'tributecity_hide_title',
+					'hint'      => __( 'Hide the band name and tagline on the single-show detail view when your page already shows them.', 'tributecity-gig-list' ),
+				),
+			),
+			array(
+				'id'       => 'tributecity_show_credit',
+				'title'    => __( 'Show credit link', 'tributecity-gig-list' ),
+				'callback' => array( $this->callbacks, 'field_checkbox' ),
+				'page'     => 'tributecity-gig-list',
+				'section'  => 'tributecity_gig_list_display',
+				'args'     => array(
+					'label_for' => 'tributecity_show_credit',
+					'hint'      => __( 'Optional. When enabled, displays a small “Powered by TributeCity.com” link under listings. Off by default.', 'tributecity-gig-list' ),
+				),
+			),
+			array(
+				'id'       => StyleManager::OPTION_USE_THEME,
+				'title'    => __( 'Use site styles', 'tributecity-gig-list' ),
+				'callback' => array( $this->callbacks, 'field_use_theme_styles' ),
+				'page'     => 'tributecity-gig-list-styling',
+				'section'  => 'tributecity_gig_list_styling',
+				'args'     => array(
+					'label_for' => StyleManager::OPTION_USE_THEME,
+				),
+			),
+			array(
+				'id'       => StyleManager::OPTION_STYLE_THEME,
+				'title'    => __( 'Style theme', 'tributecity-gig-list' ),
+				'callback' => array( $this->callbacks, 'field_style_theme' ),
+				'page'     => 'tributecity-gig-list-styling',
+				'section'  => 'tributecity_gig_list_styling',
+				'args'     => array(
+					'label_for' => StyleManager::OPTION_STYLE_THEME,
+				),
+			),
+			array(
+				'id'       => StyleManager::OPTION_LAYOUT,
+				'title'    => __( 'List layout', 'tributecity-gig-list' ),
+				'callback' => array( $this->callbacks, 'field_list_layout' ),
+				'page'     => 'tributecity-gig-list-styling',
+				'section'  => 'tributecity_gig_list_styling',
+				'args'     => array(
+					'label_for' => StyleManager::OPTION_LAYOUT,
+				),
+			),
+			array(
+				'id'       => StyleManager::OPTION_FONT_SIZE,
+				'title'    => __( 'Font size', 'tributecity-gig-list' ),
+				'callback' => array( $this->callbacks, 'field_font_size' ),
+				'page'     => 'tributecity-gig-list-styling',
+				'section'  => 'tributecity_gig_list_styling',
+				'args'     => array(
+					'label_for' => StyleManager::OPTION_FONT_SIZE,
+				),
+			),
+		);
+
+		$this->settings->set_fields( $args );
+	}
 }

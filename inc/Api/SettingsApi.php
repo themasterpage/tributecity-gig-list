@@ -1,101 +1,220 @@
 <?php
+/**
+ * Thin wrapper around WordPress Settings API menu registration.
+ *
+ * @package TributeCityGigList
+ */
 
-namespace Inc\Api;
+namespace TributeCity\GigList\Api;
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * @package TributeCityGigList
- *
+ * Registers admin menu pages, settings, sections, and fields.
  */
-class SettingsApi
-{
-    public $admin_pages = array();
-    public $admin_subpages = array();
-    public $settings = array();
-    public $section = array();
-    public $fields = array();
+class SettingsApi {
 
-    public function register()
-    {
-        if (!empty($this->admin_pages)) {
-            add_action('admin_menu', array($this, 'addAdminMenu'));
-        }
+	/**
+	 * Top-level admin pages.
+	 *
+	 * @var array<int, array<string, mixed>>
+	 */
+	public array $admin_pages = array();
 
-        if (!empty($this->settings)) {
-            add_action('admin_init', array($this, 'registerCustomFields'));
-        }
-    }
+	/**
+	 * Submenu pages.
+	 *
+	 * @var array<int, array<string, mixed>>
+	 */
+	public array $admin_subpages = array();
 
-    public function addPages(array $pages)
-    {
-        $this->admin_pages = $pages;
-        return $this;
-    }
+	/**
+	 * Registered settings.
+	 *
+	 * @var array<int, array<string, mixed>>
+	 */
+	public array $settings = array();
 
-    public function withSubPage(string $title = null)
-    {
-        if (empty($this->admin_pages)) {
-            return $this;
-        }
-        $admin_page = $this->admin_pages[0];
-        $subpage = [
-            [
-                'parent_slug' => $admin_page['menu_slug'],
-                'page_title' => $admin_page['page_title'],
-                'menu_title' => ($title) ? $title : $admin_page['menu_title'],
-                'capability' => $admin_page['capability'],
-                'menu_slug' => $admin_page['menu_slug'],
-                'callback' => $admin_page['callback'],
-            ]
-        ];
-        $this->admin_subpages = $subpage;
-        return $this;
-    }
+	/**
+	 * Settings sections.
+	 *
+	 * @var array<int, array<string, mixed>>
+	 */
+	public array $sections = array();
 
-    public function addSubPages(array $pages)
-    {
-        $this->admin_subpages = array_merge($this->admin_subpages, $pages);
-        return $this;
-    }
+	/**
+	 * Settings fields.
+	 *
+	 * @var array<int, array<string, mixed>>
+	 */
+	public array $fields = array();
 
-    public function addAdminMenu()
-    {
-        foreach ($this->admin_pages as $page) {
-            add_menu_page($page['page_title'], $page['menu_title'], $page['capability'], $page['menu_slug'], $page['callback'], $page['icon_url'], $page['position']);
-        }
-        foreach ($this->admin_subpages as $page) {
-            add_submenu_page($page['parent_slug'], $page['page_title'], $page['menu_title'], $page['capability'], $page['menu_slug'], $page['callback']);
-        }
-    }
+	/**
+	 * Hook menu and settings registration.
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+		if ( ! empty( $this->admin_pages ) ) {
+			add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
+		}
 
-    public function setSettings(array $settings)
-    {
-        $this->settings = $settings;
-        return $this;
-    }
+		if ( ! empty( $this->settings ) ) {
+			add_action( 'admin_init', array( $this, 'register_custom_fields' ) );
+		}
+	}
 
-    public function setSections(array $sections)
-    {
-        $this->sections = $sections;
-        return $this;
-    }
+	/**
+	 * Set top-level pages.
+	 *
+	 * @param array<int, array<string, mixed>> $pages Page definitions.
+	 * @return self
+	 */
+	public function add_pages( array $pages ): self {
+		$this->admin_pages = $pages;
+		return $this;
+	}
 
-    public function setFields(array $fields)
-    {
-        $this->fields = $fields;
-        return $this;
-    }
+	/**
+	 * Mirror the first page as its own submenu entry (WordPress convention).
+	 *
+	 * @param string|null $title Submenu title override.
+	 * @return self
+	 */
+	public function with_sub_page( ?string $title = null ): self {
+		if ( empty( $this->admin_pages ) ) {
+			return $this;
+		}
 
-    public function registerCustomFields()
-    {
-        //register setting
-        foreach ($this->settings as $setting) {
-            register_setting($setting["option_group"], $setting["option_name"], (isset($setting["callback"]) ? $setting["callback"] : ''));
-        }
-        foreach ($this->sections as $section) {
-            add_settings_section($section["id"], $section["title"], (isset($section["callback"]) ? $section["callback"] : ''), $section["page"]);
-        }
-        foreach ($this->fields as $field) {
-            add_settings_field($field["id"], $field["title"], (isset($field["callback"]) ? $field["callback"] : ''), $field["page"], $field["section"], (isset($field["args"]) ? $field["args"] : ''));
-        }
-    }
+		$admin_page = $this->admin_pages[0];
+
+		$this->admin_subpages = array(
+			array(
+				'parent_slug' => $admin_page['menu_slug'],
+				'page_title'  => $admin_page['page_title'],
+				'menu_title'  => $title ? $title : $admin_page['menu_title'],
+				'capability'  => $admin_page['capability'],
+				'menu_slug'   => $admin_page['menu_slug'],
+				'callback'    => $admin_page['callback'],
+			),
+		);
+
+		return $this;
+	}
+
+	/**
+	 * Merge additional submenu pages.
+	 *
+	 * @param array<int, array<string, mixed>> $pages Subpage definitions.
+	 * @return self
+	 */
+	public function add_sub_pages( array $pages ): self {
+		$this->admin_subpages = array_merge( $this->admin_subpages, $pages );
+		return $this;
+	}
+
+	/**
+	 * Register menu pages with WordPress.
+	 *
+	 * @return void
+	 */
+	public function add_admin_menu(): void {
+		foreach ( $this->admin_pages as $page ) {
+			add_menu_page(
+				$page['page_title'],
+				$page['menu_title'],
+				$page['capability'],
+				$page['menu_slug'],
+				$page['callback'],
+				$page['icon_url'],
+				$page['position']
+			);
+		}
+
+		foreach ( $this->admin_subpages as $page ) {
+			add_submenu_page(
+				$page['parent_slug'],
+				$page['page_title'],
+				$page['menu_title'],
+				$page['capability'],
+				$page['menu_slug'],
+				$page['callback']
+			);
+		}
+	}
+
+	/**
+	 * Set settings definitions.
+	 *
+	 * @param array<int, array<string, mixed>> $settings Settings.
+	 * @return self
+	 */
+	public function set_settings( array $settings ): self {
+		$this->settings = $settings;
+		return $this;
+	}
+
+	/**
+	 * Set section definitions.
+	 *
+	 * @param array<int, array<string, mixed>> $sections Sections.
+	 * @return self
+	 */
+	public function set_sections( array $sections ): self {
+		$this->sections = $sections;
+		return $this;
+	}
+
+	/**
+	 * Set field definitions.
+	 *
+	 * @param array<int, array<string, mixed>> $fields Fields.
+	 * @return self
+	 */
+	public function set_fields( array $fields ): self {
+		$this->fields = $fields;
+		return $this;
+	}
+
+	/**
+	 * Register settings, sections, and fields with the Settings API.
+	 *
+	 * @return void
+	 */
+	public function register_custom_fields(): void {
+		foreach ( $this->settings as $setting ) {
+			$args = array();
+			if ( isset( $setting['callback'] ) ) {
+				$args['sanitize_callback'] = $setting['callback'];
+			}
+			if ( isset( $setting['default'] ) ) {
+				$args['default'] = $setting['default'];
+			}
+			register_setting(
+				$setting['option_group'],
+				$setting['option_name'],
+				$args
+			);
+		}
+
+		foreach ( $this->sections as $section ) {
+			add_settings_section(
+				$section['id'],
+				$section['title'],
+				isset( $section['callback'] ) ? $section['callback'] : '',
+				$section['page']
+			);
+		}
+
+		foreach ( $this->fields as $field ) {
+			add_settings_field(
+				$field['id'],
+				$field['title'],
+				isset( $field['callback'] ) ? $field['callback'] : '',
+				$field['page'],
+				$field['section'],
+				isset( $field['args'] ) ? $field['args'] : array()
+			);
+		}
+	}
 }

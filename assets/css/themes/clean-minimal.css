@@ -1,0 +1,106 @@
+/**
+ * Theme: Clean Minimal — sparse typography-first look.
+ */
+
+.tributecity-gig-list--theme-clean-minimal {
+	--tcgl-text: #111;
+	--tcgl-muted: #666;
+	--tcgl-line: #e5e5e5;
+	color: var(--tcgl-text);
+	padding: 0.5rem 0;
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__heading {
+	font-size: 1.125rem;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+	text-transform: none;
+	color: var(--tcgl-text);
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__table th {
+	font-size: 0.75rem;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: var(--tcgl-muted);
+	background: transparent;
+	border-bottom: 1px solid var(--tcgl-text);
+	padding-left: 0;
+	padding-right: 0.75rem;
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__table td {
+	border-bottom: 1px solid var(--tcgl-line);
+	padding-left: 0;
+	padding-right: 0.75rem;
+	font-size: 0.95rem;
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__table tbody tr:hover {
+	background: transparent;
+}
+
+.tributecity-gig-list--theme-clean-minimal a {
+	color: var(--tcgl-text);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.tributecity-gig-list--theme-clean-minimal a:hover,
+.tributecity-gig-list--theme-clean-minimal a:focus {
+	opacity: 0.7;
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__band-name {
+	font-size: 1.75rem;
+	font-weight: 500;
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__tagline,
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__subtitle {
+	color: var(--tcgl-muted);
+	font-weight: 400;
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__section-title {
+	font-size: 0.8rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--tcgl-muted);
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__meta > div {
+	padding: 0.35rem 0;
+	border-bottom: 1px solid var(--tcgl-line);
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__card {
+	border: none;
+	border-top: 1px solid var(--tcgl-line);
+	border-radius: 0;
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__card-body {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__card-media {
+	border-radius: 0;
+}
+
+.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__stack-item {
+	border-bottom-color: var(--tcgl-line);
+	padding-left: 0;
+	padding-right: 0;
+}
+
+@media only screen and (max-width: 600px) {
+	.tributecity-gig-list--theme-clean-minimal .tributecity-gig-list__table tr {
+		border: none;
+		border-bottom: 1px solid var(--tcgl-line);
+		padding: 0.75rem 0;
+	}
+}

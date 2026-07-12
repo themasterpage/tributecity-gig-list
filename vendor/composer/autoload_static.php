@@ -7,17 +7,34 @@ namespace Composer\Autoload;
 class ComposerStaticInit0c5a02504d44c0b9162a153d2291832c
 {
     public static $prefixLengthsPsr4 = array (
-        'I' => 
+        'T' => 
         array (
-            'Inc\\' => 4,
+            'TributeCity\\GigList\\' => 20,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Inc\\' => 
+        'TributeCity\\GigList\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc',
         ),
+    );
+
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'TributeCity\\GigList\\Api\\Callbacks\\AdminCallbacks' => __DIR__ . '/../..' . '/inc/Api/Callbacks/AdminCallbacks.php',
+        'TributeCity\\GigList\\Api\\SettingsApi' => __DIR__ . '/../..' . '/inc/Api/SettingsApi.php',
+        'TributeCity\\GigList\\Base\\Activate' => __DIR__ . '/../..' . '/inc/Base/Activate.php',
+        'TributeCity\\GigList\\Base\\BaseController' => __DIR__ . '/../..' . '/inc/Base/BaseController.php',
+        'TributeCity\\GigList\\Base\\Deactivate' => __DIR__ . '/../..' . '/inc/Base/Deactivate.php',
+        'TributeCity\\GigList\\Base\\Enqueue' => __DIR__ . '/../..' . '/inc/Base/Enqueue.php',
+        'TributeCity\\GigList\\Base\\Seo' => __DIR__ . '/../..' . '/inc/Base/Seo.php',
+        'TributeCity\\GigList\\Base\\SettingsLinks' => __DIR__ . '/../..' . '/inc/Base/SettingsLinks.php',
+        'TributeCity\\GigList\\Base\\ShortcodeController' => __DIR__ . '/../..' . '/inc/Base/ShortcodeController.php',
+        'TributeCity\\GigList\\Base\\StyleManager' => __DIR__ . '/../..' . '/inc/Base/StyleManager.php',
+        'TributeCity\\GigList\\Base\\TributeCityApi' => __DIR__ . '/../..' . '/inc/Base/TributeCityApi.php',
+        'TributeCity\\GigList\\Pages\\Admin' => __DIR__ . '/../..' . '/inc/Pages/Admin.php',
+        'TributeCity\\GigList\\Plugin' => __DIR__ . '/../..' . '/inc/Plugin.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -25,6 +42,7 @@ class ComposerStaticInit0c5a02504d44c0b9162a153d2291832c
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit0c5a02504d44c0b9162a153d2291832c::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit0c5a02504d44c0b9162a153d2291832c::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit0c5a02504d44c0b9162a153d2291832c::$classMap;
 
         }, null, ClassLoader::class);
     }

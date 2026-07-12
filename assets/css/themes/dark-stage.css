@@ -1,0 +1,97 @@
+/**
+ * Theme: Dark Stage — nightclub / concert lighting.
+ */
+
+.tributecity-gig-list--theme-dark-stage {
+	--tcgl-bg: #121212;
+	--tcgl-surface: #1c1c1c;
+	--tcgl-border: #333;
+	--tcgl-text: #f5f0e6;
+	--tcgl-muted: #b8b0a0;
+	--tcgl-accent: #d4a017;
+	--tcgl-accent-hover: #f0c040;
+	--tcgl-accent-soft: rgba(212, 160, 23, 0.16);
+	padding: 1.5rem;
+	border-radius: 8px;
+	background: var(--tcgl-bg);
+	color: var(--tcgl-text);
+}
+
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__heading {
+	font-size: 1.35rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--tcgl-accent);
+}
+
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__table th {
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.12em;
+	color: var(--tcgl-accent);
+	background: var(--tcgl-surface);
+	border-bottom: 1px solid var(--tcgl-border);
+}
+
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__table td {
+	border-bottom: 1px solid var(--tcgl-border);
+	color: var(--tcgl-text);
+}
+
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__table tbody tr:hover {
+	background: #242424;
+}
+
+.tributecity-gig-list--theme-dark-stage a {
+	color: var(--tcgl-accent);
+}
+
+.tributecity-gig-list--theme-dark-stage a:hover,
+.tributecity-gig-list--theme-dark-stage a:focus {
+	color: var(--tcgl-accent-hover);
+}
+
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__band-name {
+	font-size: 2.1rem;
+	color: var(--tcgl-text);
+}
+
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__tagline,
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__subtitle,
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__empty,
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__credit {
+	color: var(--tcgl-muted);
+}
+
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__section-title {
+	color: var(--tcgl-accent);
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	font-size: 0.95rem;
+}
+
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__poster {
+	border: 1px solid var(--tcgl-border);
+	border-radius: 4px;
+}
+
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__card {
+	background: var(--tcgl-surface);
+	border-color: var(--tcgl-border);
+}
+
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__card-date,
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__stack-date {
+	color: var(--tcgl-accent);
+}
+
+.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__stack-item {
+	border-bottom-color: var(--tcgl-border);
+}
+
+@media only screen and (max-width: 600px) {
+	.tributecity-gig-list--theme-dark-stage .tributecity-gig-list__table tr {
+		border: 1px solid var(--tcgl-border);
+		background: var(--tcgl-surface);
+	}
+}

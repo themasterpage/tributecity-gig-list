@@ -1,0 +1,83 @@
+/**
+ * Theme: Classic — clean light table (previous default look).
+ */
+
+.tributecity-gig-list--theme-classic {
+	--tcgl-accent: #2271b1;
+}
+
+.tributecity-gig-list--theme-classic .tributecity-gig-list__heading {
+	font-size: 1.25rem;
+}
+
+.tributecity-gig-list--theme-classic .tributecity-gig-list__table {
+	border: none;
+}
+
+.tributecity-gig-list--theme-classic .tributecity-gig-list__table th {
+	text-transform: uppercase;
+	font-weight: 700;
+	font-size: 0.875rem;
+	color: #1d2327;
+	border-bottom: 2px solid #c3c4c7;
+	background-color: #f0f0f1;
+	letter-spacing: 0.025em;
+}
+
+.tributecity-gig-list--theme-classic .tributecity-gig-list__table td {
+	font-size: 0.9375rem;
+	border-bottom: 1px solid #dcdcde;
+	color: #2c3338;
+}
+
+.tributecity-gig-list--theme-classic .tributecity-gig-list__table tbody tr:hover {
+	background-color: #f6f7f7;
+}
+
+.tributecity-gig-list--theme-classic .tributecity-gig-list__band-name {
+	font-size: 2rem;
+}
+
+.tributecity-gig-list--theme-classic .tributecity-gig-list__tagline {
+	font-size: 1.1rem;
+	color: #50575e;
+}
+
+.tributecity-gig-list--theme-classic .tributecity-gig-list__section-title {
+	font-size: 1.1rem;
+	color: #1d2327;
+}
+
+.tributecity-gig-list--theme-classic a {
+	color: #2271b1;
+}
+
+.tributecity-gig-list--theme-classic a:hover,
+.tributecity-gig-list--theme-classic a:focus {
+	color: #135e96;
+}
+
+.tributecity-gig-list--theme-classic .tributecity-gig-list__card {
+	background: #fff;
+	border-color: #dcdcde;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.tributecity-gig-list--theme-classic .tributecity-gig-list__card-date,
+.tributecity-gig-list--theme-classic .tributecity-gig-list__stack-date {
+	color: #646970;
+}
+
+.tributecity-gig-list--theme-classic .tributecity-gig-list__stack-item {
+	border-bottom-color: #dcdcde;
+}
+
+@media only screen and (max-width: 600px) {
+	.tributecity-gig-list--theme-classic .tributecity-gig-list__table tr {
+		border: 1px solid #dcdcde;
+	}
+
+	.tributecity-gig-list--theme-classic .tributecity-gig-list__table td {
+		border-bottom-color: #f0f0f1;
+	}
+}

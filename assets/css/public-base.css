@@ -1,0 +1,736 @@
+/**
+ * Structural layout for TributeCity Gig List.
+ * Always loaded. Visual themes are layered on top unless "use site styles" is enabled.
+ */
+
+/*
+ * Target width for the listing block (poster + details).
+ * Theme hosts (e.g. .lz-container / .lz-prose) often cap below this — override them.
+ */
+:root {
+	--tributecity-gig-list-max: 800px;
+}
+
+/*
+ * Expand the DIRECT host of the shortcode.
+ * Led Zepplica: <div class="lz-container lz-prose"> wraps the plugin output and
+ * applies max-width: 720px plus width: min(100% - 2.5rem, …) — that was ~675px.
+ * !important beats theme main.css which loads after plugin styles by default.
+ */
+.lz-container.lz-prose:has(> .tributecity-gig-list),
+.lz-prose:has(> .tributecity-gig-list),
+.lz-container:has(> .tributecity-gig-list),
+.entry-content:has(> .tributecity-gig-list),
+.wp-block-post-content:has(> .tributecity-gig-list) {
+	max-width: var(--tributecity-gig-list-max) !important;
+	width: min(100%, var(--tributecity-gig-list-max)) !important;
+	box-sizing: border-box !important;
+	overflow: visible !important;
+	/* Desktop: full 800px content width. Mobile: keep readable side gutters. */
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+@media only screen and (max-width: 639px) {
+	.lz-container.lz-prose:has(> .tributecity-gig-list),
+	.lz-prose:has(> .tributecity-gig-list),
+	.lz-container:has(> .tributecity-gig-list),
+	.entry-content:has(> .tributecity-gig-list),
+	.wp-block-post-content:has(> .tributecity-gig-list) {
+		padding-left: 1rem !important;
+		padding-right: 1rem !important;
+		width: min(100% - 0px, var(--tributecity-gig-list-max)) !important;
+	}
+}
+
+.tributecity-gig-list {
+	--tcgl-font-scale: 1;
+	--tcgl-gutter: 1rem;
+	/* Accent for show names + interactive highlights (falls back to theme gold / amber). */
+	--tcgl-accent: var(--lz-gold, var(--lz-gold-bright, #c9a227));
+	--tcgl-accent-soft: color-mix(in srgb, var(--tcgl-accent) 16%, transparent);
+	--tcgl-accent-softer: color-mix(in srgb, var(--tcgl-accent) 8%, transparent);
+	--tcgl-row-border: color-mix(in srgb, currentColor 14%, transparent);
+	width: 100% !important;
+	max-width: var(--tributecity-gig-list-max) !important;
+	margin: 1.5rem auto;
+	box-sizing: border-box;
+	padding-left: 0;
+	padding-right: 0;
+	/* Base size; children use em so the scale multiplies through */
+	font-size: calc(1rem * var(--tcgl-font-scale));
+}
+
+@media only screen and (max-width: 639px) {
+	.tributecity-gig-list {
+		padding-left: var(--tcgl-gutter);
+		padding-right: var(--tcgl-gutter);
+	}
+}
+
+.tributecity-gig-list--font-small {
+	--tcgl-font-scale: 0.875;
+}
+
+.tributecity-gig-list--font-medium {
+	--tcgl-font-scale: 1;
+}
+
+.tributecity-gig-list--font-large {
+	--tcgl-font-scale: 1.125;
+}
+
+.tributecity-gig-list--font-x-large {
+	--tcgl-font-scale: 1.25;
+}
+
+/*
+ * Ensure Styling → Font size reaches archive interactive UI.
+ * Theme form/table rules often set fixed rem sizes that ignore inheritance.
+ */
+.tributecity-gig-list--archive-interactive,
+.tributecity-gig-list--archive-interactive.tributecity-gig-list {
+	font-size: calc(1rem * var(--tcgl-font-scale, 1)) !important;
+}
+
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__heading,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__table,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__table th,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__table td,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__show-name,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__archive-status,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__archive-empty,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__archive-note,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__pager-status,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__toggle-link,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__per-page-label {
+	font-size: inherit;
+}
+
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__archive-search,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__pager-btn,
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__per-page-select {
+	font-family: inherit;
+	font-size: 1em !important;
+	line-height: 1.4;
+}
+
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__table thead th {
+	font-size: 0.8em;
+}
+
+.tributecity-gig-list--archive-interactive .tributecity-gig-list__show-name {
+	font-size: 1.05em;
+}
+
+.tributecity-gig-list *,
+.tributecity-gig-list *::before,
+.tributecity-gig-list *::after {
+	box-sizing: border-box;
+}
+
+.tributecity-gig-list__heading {
+	text-align: center;
+	margin: 0 0 1.5rem;
+	font-size: 1.25em;
+}
+
+.tributecity-gig-list__empty {
+	text-align: center;
+	margin: 1rem 0 2rem;
+}
+
+.tributecity-gig-list__table-wrap {
+	width: 100%;
+	overflow-x: auto;
+}
+
+.tributecity-gig-list__table {
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
+}
+
+.tributecity-gig-list__table th,
+.tributecity-gig-list__table td {
+	padding: 0.75rem 1rem;
+	vertical-align: middle;
+}
+
+.tributecity-gig-list__table thead th {
+	font-size: 0.8em;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	opacity: 0.75;
+	border-bottom: 2px solid var(--tcgl-row-border);
+}
+
+.tributecity-gig-list__table tbody tr.tributecity-gig-list__row {
+	border-bottom: 1px solid var(--tcgl-row-border);
+	transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+	cursor: default;
+}
+
+.tributecity-gig-list__table tbody tr.tributecity-gig-list__row:hover,
+.tributecity-gig-list__table tbody tr.tributecity-gig-list__row:focus-within {
+	background: var(--tcgl-accent-soft);
+	box-shadow: inset 3px 0 0 var(--tcgl-accent);
+}
+
+.tributecity-gig-list__table tbody tr.tributecity-gig-list__row:active {
+	background: var(--tcgl-accent-softer);
+}
+
+.tributecity-gig-list__show-name {
+	color: var(--tcgl-accent);
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	transition: color 0.15s ease, text-shadow 0.15s ease;
+}
+
+.tributecity-gig-list__table tbody tr.tributecity-gig-list__row:hover .tributecity-gig-list__show-name,
+.tributecity-gig-list__table tbody tr.tributecity-gig-list__row:focus-within .tributecity-gig-list__show-name {
+	text-shadow: 0 0 18px color-mix(in srgb, var(--tcgl-accent) 45%, transparent);
+}
+
+/* Interactive archive toolbar + pager */
+.tributecity-gig-list__archive-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75rem 1rem;
+	margin: 0 0 1rem;
+}
+
+.tributecity-gig-list__archive-search-label {
+	flex: 1 1 220px;
+	margin: 0;
+	max-width: 100%;
+}
+
+.tributecity-gig-list__archive-search {
+	width: 100%;
+	max-width: 360px;
+	padding: 0.65rem 0.85rem;
+	border: 1px solid var(--tcgl-row-border);
+	border-radius: 6px;
+	background: color-mix(in srgb, currentColor 4%, transparent);
+	color: inherit;
+	font: inherit;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tributecity-gig-list__archive-search:hover {
+	border-color: color-mix(in srgb, var(--tcgl-accent) 55%, transparent);
+}
+
+.tributecity-gig-list__archive-search:focus {
+	outline: none;
+	border-color: var(--tcgl-accent);
+	box-shadow: 0 0 0 2px color-mix(in srgb, var(--tcgl-accent) 35%, transparent);
+}
+
+.tributecity-gig-list__archive-status {
+	margin: 0;
+	font-size: 0.9em;
+	opacity: 0.85;
+}
+
+.tributecity-gig-list__archive-empty {
+	text-align: center;
+	margin: 1.25rem 0;
+	opacity: 0.85;
+}
+
+.tributecity-gig-list__archive-pager {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0.75rem 1rem;
+	margin: 1.25rem 0 0.5rem;
+}
+
+.tributecity-gig-list__per-page {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0;
+	font-size: 0.9em;
+}
+
+.tributecity-gig-list__per-page-label {
+	opacity: 0.85;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	font-weight: 600;
+	font-size: 0.85em;
+}
+
+.tributecity-gig-list__per-page-select {
+	appearance: none;
+	min-width: 4.5rem;
+	padding: 0.45rem 1.75rem 0.45rem 0.7rem;
+	border: 1px solid var(--tcgl-accent);
+	border-radius: 999px;
+	background-color: transparent;
+	background-image: linear-gradient(45deg, transparent 50%, var(--tcgl-accent) 50%),
+		linear-gradient(135deg, var(--tcgl-accent) 50%, transparent 50%);
+	background-position: calc(100% - 14px) calc(50% - 2px), calc(100% - 9px) calc(50% - 2px);
+	background-size: 5px 5px, 5px 5px;
+	background-repeat: no-repeat;
+	color: inherit;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.tributecity-gig-list__per-page-select:hover,
+.tributecity-gig-list__per-page-select:focus {
+	outline: none;
+	background-color: var(--tcgl-accent-soft);
+	box-shadow: 0 0 0 2px color-mix(in srgb, var(--tcgl-accent) 30%, transparent);
+}
+
+.tributecity-gig-list__pager-btn {
+	appearance: none;
+	border: 1px solid var(--tcgl-accent);
+	background: transparent;
+	color: var(--tcgl-accent);
+	font: inherit;
+	font-weight: 600;
+	font-size: 0.9em;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	padding: 0.55rem 1rem;
+	border-radius: 999px;
+	cursor: pointer;
+	transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+.tributecity-gig-list__pager-btn:hover:not(:disabled),
+.tributecity-gig-list__pager-btn:focus-visible:not(:disabled) {
+	background: var(--tcgl-accent);
+	color: #111;
+	outline: none;
+	transform: translateY(-1px);
+}
+
+.tributecity-gig-list__pager-btn:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.tributecity-gig-list__pager-status {
+	font-size: 0.9em;
+	opacity: 0.85;
+	min-width: 7rem;
+	text-align: center;
+}
+
+.tributecity-gig-list__archive-toggle {
+	text-align: center;
+	margin-top: 1.5rem;
+}
+
+.tributecity-gig-list__archive-note {
+	margin: 0.5rem 0 0;
+	font-size: 0.85em;
+	opacity: 0.8;
+}
+
+.tributecity-gig-list__credit {
+	text-align: right;
+	width: 100%;
+	font-size: 0.75em;
+	margin-top: 1.5rem;
+	opacity: 0.85;
+}
+
+.tributecity-gig-list__band-name {
+	text-align: center;
+	margin: 0 0 0.25rem;
+}
+
+.tributecity-gig-list__tagline {
+	text-align: center;
+	margin: 0 0 1rem;
+}
+
+.tributecity-gig-list__heading {
+	padding-left: 0;
+	padding-right: 0;
+	word-wrap: break-word;
+	overflow-wrap: anywhere;
+}
+
+.tributecity-gig-list__subtitle,
+.tributecity-gig-list--detail .tributecity-gig-list__subtitle {
+	text-align: left !important;
+	margin: 0 0 0.5rem;
+	word-wrap: break-word;
+	overflow-wrap: anywhere;
+}
+
+.tributecity-gig-list__subtitle-meta {
+	text-align: left;
+	margin: 0 0 1.5rem;
+	opacity: 0.9;
+	word-wrap: break-word;
+	overflow-wrap: anywhere;
+}
+
+@media only screen and (max-width: 639px) {
+	.tributecity-gig-list__heading,
+	.tributecity-gig-list__subtitle,
+	.tributecity-gig-list__subtitle-meta,
+	.tributecity-gig-list__band-name,
+	.tributecity-gig-list__tagline {
+		padding-left: 0.15rem;
+		padding-right: 0.15rem;
+	}
+}
+
+.tributecity-gig-list__external-links {
+	list-style: none;
+	margin: 1rem 0 0;
+	padding: 0;
+}
+
+.tributecity-gig-list__external-links li {
+	margin: 0.35rem 0;
+}
+
+.tributecity-gig-list__section-title {
+	margin: 0 0 0.75rem;
+}
+
+.tributecity-gig-list__meta {
+	margin: 0 0 1.5rem;
+}
+
+.tributecity-gig-list__meta > div {
+	display: grid;
+	grid-template-columns: minmax(6rem, 8rem) 1fr;
+	gap: 0.5rem 1rem;
+	margin: 0.35rem 0;
+}
+
+.tributecity-gig-list__meta dt {
+	font-weight: 700;
+	margin: 0;
+}
+
+.tributecity-gig-list__meta dd {
+	margin: 0;
+}
+
+.tributecity-gig-list__description {
+	margin-bottom: 1.5rem;
+}
+
+.tributecity-gig-list__back {
+	text-align: center;
+	margin-top: 2rem;
+}
+
+/* ----- Cards layout: CSS-driven responsive (no rigid inline flex) ----- */
+.tributecity-gig-list--layout-cards .tributecity-gig-list__cards {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__cards-item {
+	width: 100%;
+	min-width: 0;
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	width: 100%;
+	max-width: 100%;
+	margin: 0;
+	overflow: hidden;
+	border: 1px solid currentColor;
+	border-color: color-mix(in srgb, currentColor 18%, transparent);
+	border-radius: 8px;
+	background: color-mix(in srgb, currentColor 4%, transparent);
+	box-sizing: border-box;
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-media {
+	flex: 0 0 auto;
+	width: 100%;
+	min-width: 0;
+	min-height: 200px;
+	overflow: hidden;
+	background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-media a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	min-height: 200px;
+	line-height: 0;
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-poster {
+	display: block;
+	width: 100%;
+	height: 100%;
+	min-height: 200px;
+	max-width: 100%;
+	object-fit: cover;
+	object-position: center center;
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-body {
+	flex: 1 1 auto;
+	width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	/* Mobile/desktop body padding — key for title side margins */
+	padding: 1rem 1.15rem 1.2rem;
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-date {
+	margin: 0 0 0.4rem;
+	font-size: 0.8em;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	opacity: 0.85;
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-title {
+	margin: 0 0 0.4rem;
+	font-size: 1.2em;
+	line-height: 1.35;
+	word-wrap: break-word;
+	overflow-wrap: anywhere;
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-title a {
+	text-decoration: none;
+	color: var(--tcgl-accent);
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-title a:hover,
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-title a:focus {
+	text-decoration: underline;
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-venue,
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-location {
+	margin: 0 0 0.25rem;
+	font-size: 0.95em;
+	opacity: 0.9;
+	word-wrap: break-word;
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-action {
+	margin: 0.75rem 0 0;
+}
+
+.tributecity-gig-list--layout-cards .tributecity-gig-list__card-link {
+	font-weight: 600;
+	font-size: 0.95em;
+	color: var(--tcgl-accent);
+}
+
+/* Tablet/desktop: true 50/50 columns */
+@media only screen and (min-width: 640px) {
+	.tributecity-gig-list--layout-cards .tributecity-gig-list__card {
+		flex-direction: row;
+		min-height: 240px;
+	}
+
+	.tributecity-gig-list--layout-cards .tributecity-gig-list__card-media {
+		flex: 0 0 50%;
+		width: 50%;
+		max-width: 50%;
+		min-height: 240px;
+		align-self: stretch;
+	}
+
+	.tributecity-gig-list--layout-cards .tributecity-gig-list__card-media a {
+		min-height: 100%;
+		height: 100%;
+	}
+
+	.tributecity-gig-list--layout-cards .tributecity-gig-list__card-poster {
+		min-height: 100%;
+	}
+
+	.tributecity-gig-list--layout-cards .tributecity-gig-list__card-body {
+		flex: 0 0 50%;
+		width: 50%;
+		max-width: 50%;
+		padding: 1.25rem 1.5rem;
+	}
+
+	.tributecity-gig-list--layout-cards .tributecity-gig-list__card-title {
+		font-size: 1.3em;
+	}
+}
+
+/* Detail view: stack on mobile, 50/50 from tablet up */
+.tributecity-gig-list__detail-grid {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	gap: 1rem;
+	margin: 0.75rem 0;
+}
+
+.tributecity-gig-list__detail-media,
+.tributecity-gig-list__detail-info {
+	flex: 1 1 100%;
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
+}
+
+.tributecity-gig-list__poster {
+	width: 100%;
+	height: auto;
+	max-width: 100%;
+	display: block;
+	object-fit: cover;
+	border-radius: 4px;
+}
+
+@media only screen and (min-width: 768px) {
+	.tributecity-gig-list__detail-grid {
+		flex-wrap: nowrap;
+		gap: 0;
+	}
+
+	.tributecity-gig-list__detail-media,
+	.tributecity-gig-list__detail-info {
+		flex: 0 0 50%;
+		width: 50%;
+		max-width: 50%;
+		padding: 0.75rem;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+	.tributecity-gig-list__detail-info {
+		padding: 0.25rem 0.15rem 0.5rem;
+	}
+
+	.tributecity-gig-list__meta > div {
+		grid-template-columns: minmax(5.5rem, 7rem) 1fr;
+		gap: 0.35rem 0.75rem;
+	}
+}
+
+/* ----- Stacked list layout ----- */
+.tributecity-gig-list__stack {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.tributecity-gig-list__stack-item {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.35rem 1rem;
+	padding: 1rem 0;
+	margin: 0;
+	border-bottom: 1px solid currentColor;
+	border-bottom-color: color-mix(in srgb, currentColor 18%, transparent);
+}
+
+.tributecity-gig-list__stack-date {
+	font-size: 0.8em;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	opacity: 0.8;
+}
+
+.tributecity-gig-list__stack-title {
+	font-size: 1.1em;
+	font-weight: 700;
+	line-height: 1.3;
+}
+
+.tributecity-gig-list__stack-title a {
+	text-decoration: none;
+}
+
+.tributecity-gig-list__stack-title a:hover,
+.tributecity-gig-list__stack-title a:focus {
+	text-decoration: underline;
+}
+
+.tributecity-gig-list__stack-meta {
+	font-size: 0.95em;
+	opacity: 0.85;
+}
+
+.tributecity-gig-list__stack-action {
+	font-weight: 600;
+	font-size: 0.9em;
+}
+
+/* Inherit mode: light structural polish only; colors/fonts come from the theme. */
+.tributecity-gig-list--inherit .tributecity-gig-list__table th {
+	font-weight: 700;
+	border-bottom: 1px solid currentColor;
+	opacity: 0.85;
+}
+
+.tributecity-gig-list--inherit .tributecity-gig-list__table td {
+	border-bottom: 1px solid currentColor;
+	border-bottom-color: color-mix(in srgb, currentColor 20%, transparent);
+}
+
+@media only screen and (min-width: 640px) {
+	.tributecity-gig-list__stack-item {
+		grid-template-columns: 8.5rem 1fr auto;
+		align-items: center;
+		gap: 1rem;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.tributecity-gig-list--layout-table .tributecity-gig-list__table thead {
+		display: none;
+	}
+
+	.tributecity-gig-list--layout-table .tributecity-gig-list__table tr {
+		display: block;
+		margin-bottom: 1rem;
+		padding: 0.5rem;
+	}
+
+	.tributecity-gig-list--layout-table .tributecity-gig-list__table td {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.5rem 0.25rem;
+	}
+
+	.tributecity-gig-list--layout-table .tributecity-gig-list__table td::before {
+		content: attr(data-label);
+		font-weight: 700;
+		flex: 0 0 35%;
+	}
+}
