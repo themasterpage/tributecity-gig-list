@@ -1,10 +1,10 @@
 # TributeCity Gig List — WordPress.org Submission Guide
 
 **Plugin:** TributeCity Gig List  
-**Version:** 2.5.0  
+**Version:** 2.5.1  
 **Slug (proposed):** `tributecity-gig-list`  
 **GitHub:** https://github.com/themasterpage/tributecity-gig-list  
-**Release zip:** `../tributecity-gig-list-dist/tributecity-gig-list-2.5.0.zip`
+**Release zip:** `../tributecity-gig-list-dist/tributecity-gig-list-2.5.1.zip`
 
 This document is the checklist for submitting the plugin to the official WordPress.org Plugin Directory.
 
@@ -14,7 +14,7 @@ This document is the checklist for submitting the plugin to the official WordPre
 
 | Item | Status |
 |------|--------|
-| Modern plugin (v2.5.0) | Done |
+| Modern plugin (v2.5.1) | Done |
 | GPL-2.0-or-later license header + `license.txt` | Done |
 | `readme.txt` (WordPress.org format) | Done |
 | Security: sanitize/escape, capabilities, Settings API | Done |
@@ -35,7 +35,7 @@ Source repo:
   /Users/themasterpage/Documents/Projects/Grok/tributecity-gig-list
 
 Release zip (upload this to WordPress.org when requested):
-  /Users/themasterpage/Documents/Projects/Grok/tributecity-gig-list-dist/tributecity-gig-list-2.5.0.zip
+  /Users/themasterpage/Documents/Projects/Grok/tributecity-gig-list-dist/tributecity-gig-list-2.5.1.zip
 ```
 
 ### Zip contents rules (already followed)
@@ -105,7 +105,7 @@ You already addressed most; re-confirm before submit:
 5. **No remote executable JS/CSS** — assets are local.  
 6. **Human-readable code** — no obfuscation.  
 7. **Naming** — “TributeCity” is your product; avoid trademark abuse of “WordPress”.  
-8. **readme.txt** — Stable tag matches version (`2.5.0`), Tested up to is current.
+8. **readme.txt** — Stable tag matches version (`2.5.1`), Tested up to is current.
 
 ---
 
@@ -157,7 +157,7 @@ rsync -av --delete \
 #### Tag the release
 
 ```bash
-svn cp trunk tags/2.5.0
+svn cp trunk tags/2.5.1
 ```
 
 #### Assets
@@ -172,9 +172,9 @@ svn cp trunk tags/2.5.0
 ```bash
 svn status
 svn add trunk/* --force
-svn add tags/2.5.0 --force
+svn add tags/2.5.1 --force
 svn add assets/* --force
-svn commit -m "Initial release 2.5.0"
+svn commit -m "Initial release 2.5.1"
 ```
 
 ### Step D — Verify on WordPress.org
@@ -207,7 +207,7 @@ svn commit -m "Release X.Y.Z"
 ### Commit (already done)
 
 ```text
-Modernize TributeCity Gig List for WordPress.org (v2.5.0).
+Modernize TributeCity Gig List for WordPress.org (v2.5.1).
 ```
 
 Branch: `master`  
@@ -275,9 +275,9 @@ git push origin master
 4. [ ] Create icons, banner, screenshots  
 5. [ ] Push GitHub if not already pushed  
 6. [ ] Submit at https://wordpress.org/plugins/developers/add/  
-7. [ ] After approval: SVN trunk + `tags/2.5.0` + assets  
+7. [ ] After approval: SVN trunk + `tags/2.5.1` + assets  
 8. [ ] Verify the public plugin page and install from directory  
 
 ---
 
-*Generated for TributeCity Gig List v2.5.0.*
+*Generated for TributeCity Gig List v2.5.1.*

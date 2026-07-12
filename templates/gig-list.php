@@ -61,7 +61,7 @@ $normalize_gig = static function ( $gig ) use ( $date_format, $show_details, $cu
 		$detail_url = add_query_arg( 'gig_id', sanitize_key( (string) $gig->gig_id ), $current_url );
 	}
 
-	// Posters only when detail links are shown (current styled layouts).
+	// Posters for current-list layouts when the API provides one (including limit teasers).
 	$poster_url = '';
 	if ( $show_details && ! empty( $gig->poster ) ) {
 		$poster_url = $media_base . ltrim( (string) $gig->poster, '/' );
@@ -92,7 +92,7 @@ $normalize_gig = static function ( $gig ) use ( $date_format, $show_details, $cu
 ?>
 <section
 	class="<?php echo esc_attr( $wrapper_classes ); ?>"
-	data-tcgl-v="2.5.0"
+	data-tcgl-v="2.5.1"
 	aria-labelledby="tributecity-gig-list-heading"
 	<?php echo $wrapper_style ? ' style="' . esc_attr( $wrapper_style ) . '"' : ''; ?>
 >

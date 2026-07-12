@@ -117,8 +117,8 @@ class ShortcodeController extends BaseController {
 		 * Show / date / location only — no posters or detail links.
 		 */
 		if ( $is_archive ) {
-			$list_layout     = 'archive-table';
-			$show_details    = false;
+			$list_layout      = 'archive-table';
+			$show_details     = false;
 			$archive_per_page = (int) apply_filters( 'tributecity_gig_list_archive_per_page', 10 );
 			// Allowed UI values are 10 / 25 / 50 (or “all” in the select). Normalize odd defaults.
 			if ( ! in_array( $archive_per_page, array( 10, 25, 50 ), true ) ) {
@@ -126,13 +126,13 @@ class ShortcodeController extends BaseController {
 			}
 			Enqueue::enqueue_archive_script();
 		} else {
-			// Detail links on current list (not for pure limit widgets).
-			$show_details     = empty( $options['user_limit'] );
+			// Current shows: posters + detail links always (including limit="N" teaser embeds).
+			$show_details     = true;
 			$archive_per_page = 15;
 		}
 
-		// Archive/current toggle whenever this is a full page list (not a limit widget).
-		$show_toggle     = empty( $options['user_limit'] );
+		// Archive/current toggle only on full-page lists (not limit="N" widgets).
+		$show_toggle = empty( $options['user_limit'] );
 		$show_credit     = (bool) get_option( 'tributecity_show_credit', 0 );
 		$wrapper_classes = StyleManager::get_wrapper_classes( $is_archive ? 'table' : $layout_override );
 		if ( $is_archive ) {

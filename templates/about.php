@@ -49,7 +49,7 @@ defined( 'ABSPATH' ) || exit;
 		<tbody>
 			<tr>
 				<td><code>limit</code></td>
-				<td><?php esc_html_e( 'Maximum number of shows to display.', 'tributecity-gig-list' ); ?></td>
+				<td><?php esc_html_e( 'Maximum number of shows to display. Posters and detail links still appear; the archive toggle is hidden.', 'tributecity-gig-list' ); ?></td>
 				<td><code>[tributecity_gigs limit="5"]</code></td>
 			</tr>
 			<tr>

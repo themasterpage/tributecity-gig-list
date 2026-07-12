@@ -4,7 +4,7 @@ Tags: gigs, events, concerts, tribute band, shortcode
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,10 @@ No. Credit is optional and off by default (WordPress.org Guideline 10).
 3. Single show detail view.
 
 == Changelog ==
+
+= 2.5.1 =
+* Limit teasers (`limit="N"`) keep posters and View details; only the archive/current toggle stays hidden.
+* Cards without a poster use full width (no empty half-column).
 
 = 2.5.0 =
 * Mobile: horizontal padding for titles and main listings; fully responsive cards/detail.

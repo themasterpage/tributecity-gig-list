@@ -69,7 +69,7 @@ $subtitle_parts = array_filter(
 ?>
 <article
 	class="<?php echo esc_attr( $wrapper_classes ); ?>"
-	data-tcgl-v="2.5.0"
+	data-tcgl-v="2.5.1"
 	itemscope
 	itemtype="https://schema.org/MusicEvent"
 	<?php echo $wrapper_style ? ' style="' . esc_attr( $wrapper_style ) . '"' : ''; ?>

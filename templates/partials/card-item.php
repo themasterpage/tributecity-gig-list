@@ -14,9 +14,10 @@ defined( 'ABSPATH' ) || exit;
 
 $has_poster = ! empty( $row['poster_url'] );
 $item_id    = ! empty( $row['gig_id'] ) ? 'tcgl-gig-' . sanitize_html_class( (string) $row['gig_id'] ) : '';
+$card_class = 'tributecity-gig-list__card' . ( $has_poster ? '' : ' tributecity-gig-list__card--no-poster' );
 ?>
 <article
-	class="tributecity-gig-list__card"
+	class="<?php echo esc_attr( $card_class ); ?>"
 	data-tcgl-card="50-50"
 	<?php echo $item_id ? ' id="' . esc_attr( $item_id ) . '"' : ''; ?>
 	itemscope
