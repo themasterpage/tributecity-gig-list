@@ -42,10 +42,11 @@ class ShortcodeController extends BaseController {
 
 		$atts = shortcode_atts(
 			array(
-				'gig_id'  => '',
-				'archive' => '',
-				'limit'   => '',
-				'layout'  => '',
+				'gig_id'   => '',
+				'archive'  => '',
+				'limit'    => '',
+				'layout'   => '',
+				'base_url' => '',
 			),
 			(array) $atts,
 			'tributecity_gigs'
@@ -64,10 +65,11 @@ class ShortcodeController extends BaseController {
 		}
 
 		$options = array(
-			'gig_id'  => sanitize_key( (string) $atts['gig_id'] ),
-			'archive' => self::to_bool( $atts['archive'] ),
-			'limit'   => absint( $atts['limit'] ),
-			'layout'  => sanitize_key( (string) $atts['layout'] ),
+			'gig_id'   => sanitize_key( (string) $atts['gig_id'] ),
+			'archive'  => self::to_bool( $atts['archive'] ),
+			'limit'    => absint( $atts['limit'] ),
+			'layout'   => sanitize_key( (string) $atts['layout'] ),
+			'base_url' => esc_url_raw( (string) $atts['base_url'] ),
 		);
 
 		// Explicit shortcode limit (e.g. limit="5").
@@ -109,7 +111,9 @@ class ShortcodeController extends BaseController {
 		$is_archive      = ! empty( $options['archive'] );
 		$layout_override = ! empty( $options['layout'] ) ? (string) $options['layout'] : null;
 		$list_layout     = StyleManager::get_active_layout( $layout_override );
-		$current_url     = $this->get_current_page_url();
+		$current_url     = ! empty( $options['base_url'] )
+			? (string) $options['base_url']
+			: $this->get_current_page_url();
 		$date_format     = get_option( 'date_format' );
 
 		/*
@@ -167,6 +171,8 @@ class ShortcodeController extends BaseController {
 		$time_format  = (string) get_option( 'time_format' );
 		$hide_title   = (bool) get_option( 'tributecity_hide_title', 0 );
 		$media_base   = TributeCityApi::MEDIA_BASE_URL;
+		// Prefer explicit base_url (e.g. tour archive) over the current request path.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Optional public shortcode override via referer not used; base from shortcode only.
 		$list_url     = $this->get_current_page_url( array( 'gig_id' => null ) );
 		$show_credit  = (bool) get_option( 'tributecity_show_credit', 0 );
 
@@ -223,16 +229,15 @@ class ShortcodeController extends BaseController {
 	 *
 	 * Pass null as a value to remove a query arg.
 	 *
+	 * Important: never use bare get_permalink() on archives — that returns the
+	 * first post in the main query loop (e.g. a sample CPT), which breaks
+	 * “View details” links.
+	 *
 	 * @param array<string, string|null> $overrides Query args to set or remove.
 	 * @return string
 	 */
 	private function get_current_page_url( array $overrides = array() ): string {
-		$permalink = get_permalink();
-		if ( ! is_string( $permalink ) || '' === $permalink ) {
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized via esc_url_raw below.
-			$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( (string) $_SERVER['REQUEST_URI'] ) : '/';
-			$permalink   = home_url( $request_uri );
-		}
+		$permalink = $this->resolve_current_list_url();
 
 		$url = remove_query_arg( array( 'gig_id', 'archive' ), $permalink );
 
@@ -245,6 +250,58 @@ class ShortcodeController extends BaseController {
 		}
 
 		return esc_url_raw( $url );
+	}
+
+	/**
+	 * Resolve the public URL of the page currently displaying the shortcode.
+	 *
+	 * @return string
+	 */
+	private function resolve_current_list_url(): string {
+		global $wp;
+
+		// Most reliable: the path WordPress matched for this request.
+		if ( ! empty( $wp->request ) ) {
+			return home_url( user_trailingslashit( $wp->request ) );
+		}
+
+		if ( is_singular() ) {
+			$link = get_permalink( get_queried_object_id() );
+			if ( is_string( $link ) && '' !== $link ) {
+				return $link;
+			}
+		}
+
+		if ( is_post_type_archive() ) {
+			$post_type = get_query_var( 'post_type' );
+			if ( is_array( $post_type ) ) {
+				$post_type = reset( $post_type );
+			}
+			$link = get_post_type_archive_link( (string) $post_type );
+			if ( is_string( $link ) && '' !== $link ) {
+				return $link;
+			}
+		}
+
+		if ( is_front_page() ) {
+			return home_url( '/' );
+		}
+
+		if ( is_home() ) {
+			$posts_page = (int) get_option( 'page_for_posts' );
+			if ( $posts_page ) {
+				$link = get_permalink( $posts_page );
+				if ( is_string( $link ) && '' !== $link ) {
+					return $link;
+				}
+			}
+		}
+
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Path only; sanitized via esc_url_raw by caller.
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( (string) $_SERVER['REQUEST_URI'] ) : '/';
+		$path        = (string) wp_parse_url( $request_uri, PHP_URL_PATH );
+
+		return home_url( $path ? $path : '/' );
 	}
 
 	/**

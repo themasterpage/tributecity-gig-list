@@ -92,7 +92,7 @@ $normalize_gig = static function ( $gig ) use ( $date_format, $show_details, $cu
 ?>
 <section
 	class="<?php echo esc_attr( $wrapper_classes ); ?>"
-	data-tcgl-v="2.5.1"
+	data-tcgl-v="2.5.3"
 	aria-labelledby="tributecity-gig-list-heading"
 	<?php echo $wrapper_style ? ' style="' . esc_attr( $wrapper_style ) . '"' : ''; ?>
 >

@@ -4,7 +4,7 @@ Tags: gigs, events, concerts, tribute band, shortcode
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.5.1
+Stable tag: 2.5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,13 @@ No. Credit is optional and off by default (WordPress.org Guideline 10).
 3. Single show detail view.
 
 == Changelog ==
+
+= 2.5.3 =
+* Fix: Mobile card list posters were cropped/zoomed (`object-fit: cover` + fixed min-height). Stacked cards now show the full flyer at natural aspect ratio, matching the detail view.
+
+= 2.5.2 =
+* Fix: “View details” on post type archives no longer links to the first CPT post in the main query (dummy sample tours). List URLs now resolve from the current request / archive link.
+* New: optional shortcode attribute base_url for embeds (e.g. homepage teaser → tour archive detail links).
 
 = 2.5.1 =
 * Limit teasers (`limit="N"`) keep posters and View details; only the archive/current toggle stays hidden.

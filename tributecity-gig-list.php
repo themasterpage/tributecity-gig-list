@@ -3,7 +3,7 @@
  * Plugin Name:       TributeCity Gig List
  * Plugin URI:        https://tributecity.com
  * Description:       Display live and archived show listings from a TributeCity Pro band account via shortcode.
- * Version:           2.5.1
+ * Version:           2.5.3
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Lenny Mann
@@ -33,7 +33,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'TRIBUTECITY_GIG_LIST_VERSION', '2.5.1' );
+define( 'TRIBUTECITY_GIG_LIST_VERSION', '2.5.3' );
 define( 'TRIBUTECITY_GIG_LIST_FILE', __FILE__ );
 define( 'TRIBUTECITY_GIG_LIST_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TRIBUTECITY_GIG_LIST_URL', plugin_dir_url( __FILE__ ) );
