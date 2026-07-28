@@ -1,0 +1,25 @@
+# Files excluded from WordPress.org / release zips (and plugin-check packaging).
+.git
+.gitignore
+.gitattributes
+.github
+.distignore
+.DS_Store
+.idea
+.vscode
+node_modules
+*.log
+debug-*.png
+docs
+phpcs.xml
+phpcs.xml.dist
+phpunit.xml
+phpunit.xml.dist
+tests
+bin
+composer.json
+composer.lock
+package.json
+package-lock.json
+README.md
+WORDPRESS-ORG-SUBMISSION.md

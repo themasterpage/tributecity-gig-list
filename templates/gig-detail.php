@@ -2,74 +2,85 @@
 /**
  * Front-end single gig detail template.
  *
- * Expected variables from ShortcodeController::render_gig_detail():
+ * Expected view bag from ShortcodeController::render_gig_detail():
+ * gig, date_time, display_price, hide_title, media_base, list_url,
+ * show_credit, wrapper_classes, wrapper_style.
  *
  * @package TributeCityGigList
  *
- * @var object $gig           Gig data object.
- * @var string $date_time     Formatted date/time string.
- * @var string $display_price Formatted price string.
- * @var bool   $hide_title    Whether to hide band name/tagline.
- * @var string $media_base    Media base URL for posters.
- * @var string $list_url      URL back to the list view.
- * @var bool   $show_credit      Whether to show optional credit link.
- * @var string $wrapper_classes  CSS classes for root element.
- * @var string $wrapper_style    Inline CSS variables for root element.
+ * @var array<string, mixed> $tributecity_gig_list_view Template variables.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-if ( empty( $wrapper_classes ) ) {
-	$wrapper_classes = 'tributecity-gig-list tributecity-gig-list--detail';
-} else {
-	$wrapper_classes .= ' tributecity-gig-list--detail';
-}
+/**
+ * Render the gig detail markup in local scope (Plugin Check PrefixAllGlobals).
+ *
+ * @param array<string, mixed> $tributecity_gig_list_view View variables.
+ * @return void
+ */
+( static function ( array $tributecity_gig_list_view ): void {
+	$gig             = $tributecity_gig_list_view['gig'] ?? null;
+	$date_time       = isset( $tributecity_gig_list_view['date_time'] ) ? (string) $tributecity_gig_list_view['date_time'] : '';
+	$display_price   = isset( $tributecity_gig_list_view['display_price'] ) ? (string) $tributecity_gig_list_view['display_price'] : '';
+	$hide_title      = ! empty( $tributecity_gig_list_view['hide_title'] );
+	$media_base      = isset( $tributecity_gig_list_view['media_base'] ) ? (string) $tributecity_gig_list_view['media_base'] : '';
+	$list_url        = isset( $tributecity_gig_list_view['list_url'] ) ? (string) $tributecity_gig_list_view['list_url'] : '';
+	$show_credit     = ! empty( $tributecity_gig_list_view['show_credit'] );
+	$wrapper_classes = isset( $tributecity_gig_list_view['wrapper_classes'] ) ? (string) $tributecity_gig_list_view['wrapper_classes'] : 'tributecity-gig-list';
+	$wrapper_style   = isset( $tributecity_gig_list_view['wrapper_style'] ) ? (string) $tributecity_gig_list_view['wrapper_style'] : '';
 
-if ( empty( $wrapper_style ) ) {
-	$wrapper_style = '';
-}
+	if ( ! is_object( $gig ) ) {
+		return;
+	}
 
-$allowed_desc = array(
-	'a'      => array(
-		'href'   => true,
-		'title'  => true,
-		'target' => true,
-		'rel'    => true,
-	),
-	'br'     => array(),
-	'em'     => array(),
-	'strong' => array(),
-	'p'      => array(),
-	'ul'     => array(),
-	'ol'     => array(),
-	'li'     => array(),
-	'span'   => array( 'class' => true ),
-);
+	if ( '' === $wrapper_classes ) {
+		$wrapper_classes = 'tributecity-gig-list tributecity-gig-list--detail';
+	} else {
+		$wrapper_classes .= ' tributecity-gig-list--detail';
+	}
 
-$poster_url = ( ! empty( $gig->poster ) ) ? $media_base . ltrim( (string) $gig->poster, '/' ) : '';
-$event_url  = ! empty( $gig->event_url ) ? (string) $gig->event_url : '';
-$fb_url     = ! empty( $gig->fb_event_url ) ? (string) $gig->fb_event_url : '';
-$ticket_url = ! empty( $gig->ticket_url ) ? (string) $gig->ticket_url : '';
-$venue_url  = ! empty( $gig->url ) ? (string) $gig->url : '';
-// API sometimes returns hostnames without a scheme.
-if ( $venue_url && ! preg_match( '#^https?://#i', $venue_url ) ) {
-	$venue_url = 'https://' . ltrim( $venue_url, '/' );
-}
-$description = isset( $gig->description ) ? (string) $gig->description : '';
+	$allowed_desc = array(
+		'a'      => array(
+			'href'   => true,
+			'title'  => true,
+			'target' => true,
+			'rel'    => true,
+		),
+		'br'     => array(),
+		'em'     => array(),
+		'strong' => array(),
+		'p'      => array(),
+		'ul'     => array(),
+		'ol'     => array(),
+		'li'     => array(),
+		'span'   => array( 'class' => true ),
+	);
 
-$gig_name = isset( $gig->gig_name ) ? (string) $gig->gig_name : '';
-$subtitle_parts = array_filter(
-	array(
-		$gig_name,
-		$date_time,
-		isset( $gig->venue_name ) ? (string) $gig->venue_name : '',
-		isset( $gig->location ) ? (string) $gig->location : '',
-	)
-);
-?>
+	$poster_url = ( ! empty( $gig->poster ) ) ? $media_base . ltrim( (string) $gig->poster, '/' ) : '';
+	$event_url  = ! empty( $gig->event_url ) ? (string) $gig->event_url : '';
+	$fb_url     = ! empty( $gig->fb_event_url ) ? (string) $gig->fb_event_url : '';
+	$ticket_url = ! empty( $gig->ticket_url ) ? (string) $gig->ticket_url : '';
+	$venue_url  = ! empty( $gig->url ) ? (string) $gig->url : '';
+	// API sometimes returns hostnames without a scheme.
+	if ( $venue_url && ! preg_match( '#^https?://#i', $venue_url ) ) {
+		$venue_url = 'https://' . ltrim( $venue_url, '/' );
+	}
+	$description = isset( $gig->description ) ? (string) $gig->description : '';
+
+	$gig_name       = isset( $gig->gig_name ) ? (string) $gig->gig_name : '';
+	$subtitle_parts = array_filter(
+		array(
+			$gig_name,
+			$date_time,
+			isset( $gig->venue_name ) ? (string) $gig->venue_name : '',
+			isset( $gig->location ) ? (string) $gig->location : '',
+		)
+	);
+	?>
 <article
 	class="<?php echo esc_attr( $wrapper_classes ); ?>"
-	data-tcgl-v="2.5.3"
+	data-tcgl-v="2.5.5"
 	itemscope
 	itemtype="https://schema.org/MusicEvent"
 	<?php echo $wrapper_style ? ' style="' . esc_attr( $wrapper_style ) . '"' : ''; ?>
@@ -271,3 +282,5 @@ $subtitle_parts = array_filter(
 	echo \TributeCity\GigList\Base\Seo::detail_json_ld( $gig, $list_url );
 	?>
 </article>
+	<?php
+} )( isset( $tributecity_gig_list_view ) && is_array( $tributecity_gig_list_view ) ? $tributecity_gig_list_view : array() );

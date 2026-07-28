@@ -116,10 +116,91 @@
 		});
 	}
 
+	function copyText(text) {
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			return navigator.clipboard.writeText(text);
+		}
+
+		return new Promise(function (resolve, reject) {
+			var ta = document.createElement('textarea');
+			ta.value = text;
+			ta.setAttribute('readonly', '');
+			ta.style.position = 'fixed';
+			ta.style.left = '-9999px';
+			document.body.appendChild(ta);
+			ta.select();
+			try {
+				if (document.execCommand('copy')) {
+					resolve();
+				} else {
+					reject(new Error('Copy command failed'));
+				}
+			} catch (err) {
+				reject(err);
+			} finally {
+				document.body.removeChild(ta);
+			}
+		});
+	}
+
+	function initShortcodeCopy() {
+		var buttons = document.querySelectorAll('.tributecity-shortcode-copy__btn');
+		if (!buttons.length) {
+			return;
+		}
+
+		buttons.forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				var text = btn.getAttribute('data-copy') || '';
+				if (!text) {
+					return;
+				}
+
+				copyText(text)
+					.then(function () {
+						btn.classList.add('is-copied');
+						btn.setAttribute('title', 'Copied!');
+						window.setTimeout(function () {
+							btn.classList.remove('is-copied');
+							btn.setAttribute('title', 'Copy to clipboard');
+						}, 1500);
+					})
+					.catch(function () {
+						btn.classList.add('is-error');
+						window.setTimeout(function () {
+							btn.classList.remove('is-error');
+						}, 1500);
+					});
+			});
+		});
+	}
+
+	function initBandIdField() {
+		var field = document.getElementById('tributecity_band_id');
+		if (!field) {
+			return;
+		}
+
+		function sanitize() {
+			var digits = (field.value || '').replace(/[^0-9]/g, '').slice(0, 10);
+			if (field.value !== digits) {
+				field.value = digits;
+			}
+		}
+
+		field.addEventListener('input', sanitize);
+		field.addEventListener('paste', function () {
+			window.setTimeout(sanitize, 0);
+		});
+		sanitize();
+	}
+
 	function init() {
 		initThemePicker();
 		initLayoutPicker();
 		initFontSizePicker();
+		initShortcodeCopy();
+		initBandIdField();
 	}
 
 	if (document.readyState === 'loading') {

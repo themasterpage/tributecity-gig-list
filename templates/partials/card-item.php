@@ -7,15 +7,22 @@
  *
  * @package TributeCityGigList
  *
- * @var array<string, mixed> $row Normalized gig row.
+ * @var array<string, mixed> $row Normalized gig row from parent template.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$has_poster = ! empty( $row['poster_url'] );
-$item_id    = ! empty( $row['gig_id'] ) ? 'tcgl-gig-' . sanitize_html_class( (string) $row['gig_id'] ) : '';
-$card_class = 'tributecity-gig-list__card' . ( $has_poster ? '' : ' tributecity-gig-list__card--no-poster' );
-?>
+/**
+ * Render one card in local scope (Plugin Check PrefixAllGlobals).
+ *
+ * @param array<string, mixed> $row Normalized gig row.
+ * @return void
+ */
+( static function ( array $row ): void {
+	$has_poster = ! empty( $row['poster_url'] );
+	$item_id    = ! empty( $row['gig_id'] ) ? 'tcgl-gig-' . sanitize_html_class( (string) $row['gig_id'] ) : '';
+	$card_class = 'tributecity-gig-list__card' . ( $has_poster ? '' : ' tributecity-gig-list__card--no-poster' );
+	?>
 <article
 	class="<?php echo esc_attr( $card_class ); ?>"
 	data-tcgl-card="50-50"
@@ -90,3 +97,5 @@ $card_class = 'tributecity-gig-list__card' . ( $has_poster ? '' : ' tributecity-
 		<?php endif; ?>
 	</div>
 </article>
+	<?php
+} )( isset( $row ) && is_array( $row ) ? $row : array() );

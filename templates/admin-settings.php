@@ -9,13 +9,20 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$active_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( (string) $_GET['tab'] ) ) : 'settings'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only tab navigation.
-if ( ! in_array( $active_tab, array( 'settings', 'styling', 'about' ), true ) ) {
-	$active_tab = 'settings';
-}
+/**
+ * Render admin settings tabs in local scope (Plugin Check PrefixAllGlobals).
+ *
+ * @return void
+ */
+( static function (): void {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only tab navigation.
+	$active_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( (string) $_GET['tab'] ) ) : 'settings';
+	if ( ! in_array( $active_tab, array( 'settings', 'styling', 'about' ), true ) ) {
+		$active_tab = 'settings';
+	}
 
-$base_url = admin_url( 'admin.php?page=tributecity-gig-list' );
-?>
+	$base_url = admin_url( 'admin.php?page=tributecity-gig-list' );
+	?>
 <div class="wrap tributecity-gig-list-admin">
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
@@ -38,7 +45,7 @@ $base_url = admin_url( 'admin.php?page=tributecity-gig-list' );
 			href="<?php echo esc_url( add_query_arg( 'tab', 'about', $base_url ) ); ?>"
 			class="nav-tab <?php echo 'about' === $active_tab ? 'nav-tab-active' : ''; ?>"
 		>
-			<?php esc_html_e( 'About & shortcode', 'tributecity-gig-list' ); ?>
+			<?php esc_html_e( 'Shortcodes', 'tributecity-gig-list' ); ?>
 		</a>
 	</nav>
 
@@ -82,3 +89,5 @@ $base_url = admin_url( 'admin.php?page=tributecity-gig-list' );
 		<?php endif; ?>
 	</div>
 </div>
+	<?php
+} )();

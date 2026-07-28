@@ -28,6 +28,76 @@
 	font-size: 13px;
 }
 
+/* Shortcode copy-to-clipboard control */
+.tributecity-shortcode-copy {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	vertical-align: middle;
+}
+
+.tributecity-shortcode-copy__code {
+	font-size: 13px;
+}
+
+.tributecity-shortcode-copy__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+	padding: 0;
+	width: 28px;
+	height: 28px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	background: transparent;
+	color: #646970;
+	cursor: pointer;
+	vertical-align: middle;
+	line-height: 1;
+	transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.tributecity-shortcode-copy__btn .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 1;
+}
+
+.tributecity-shortcode-copy__btn:hover,
+.tributecity-shortcode-copy__btn:focus {
+	color: #2271b1;
+	background: #f0f6fc;
+	border-color: #c3c4c7;
+	outline: none;
+}
+
+.tributecity-shortcode-copy__btn:focus-visible {
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+.tributecity-shortcode-copy__btn.is-copied {
+	color: #00a32a;
+	background: #edfaef;
+	border-color: #68de7c;
+}
+
+.tributecity-shortcode-copy__btn.is-copied .dashicons::before {
+	content: "\f147"; /* yes / checkmark */
+}
+
+.tributecity-shortcode-copy__btn.is-error {
+	color: #d63638;
+	background: #fcf0f1;
+	border-color: #f0b7b8;
+}
+
+#tributecity_band_id {
+	width: 8em;
+	max-width: 100%;
+}
+
 /* Theme picker */
 .tributecity-theme-picker__grid {
 	display: grid;

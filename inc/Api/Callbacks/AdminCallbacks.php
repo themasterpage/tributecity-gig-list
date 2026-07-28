@@ -53,6 +53,9 @@ class AdminCallbacks extends BaseController {
 	public function sanitize_band_id( $input ): string {
 		$value = is_scalar( $input ) ? (string) $input : '';
 		$value = preg_replace( '/[^0-9]/', '', $value );
+		if ( is_string( $value ) && strlen( $value ) > 10 ) {
+			$value = substr( $value, 0, 10 );
+		}
 		TributeCityApi::clear_cache();
 		return is_string( $value ) ? $value : '';
 	}
@@ -166,11 +169,11 @@ class AdminCallbacks extends BaseController {
 	public function field_band_id(): void {
 		$value = (string) get_option( 'tributecity_band_id', '' );
 		printf(
-			'<input type="text" class="regular-text" id="tributecity_band_id" name="tributecity_band_id" value="%s" inputmode="numeric" pattern="[0-9]*" />',
+			'<input type="text" class="small-text" id="tributecity_band_id" name="tributecity_band_id" value="%s" maxlength="10" size="10" inputmode="numeric" pattern="[0-9]{0,10}" autocomplete="off" />',
 			esc_attr( $value )
 		);
 		echo '<p class="description">';
-		echo esc_html__( 'Numeric Band ID from your TributeCity Pro account.', 'tributecity-gig-list' );
+		echo esc_html__( 'Numeric Band ID from your TributeCity band account (up to 10 digits).', 'tributecity-gig-list' );
 		echo '</p>';
 	}
 

@@ -39,7 +39,7 @@ class Enqueue extends BaseController {
 		wp_enqueue_style(
 			'tributecity-gig-list-admin',
 			$this->plugin_url . 'assets/css/admin.css',
-			array(),
+			array( 'dashicons' ),
 			TRIBUTECITY_GIG_LIST_VERSION
 		);
 

@@ -2,100 +2,111 @@
 /**
  * Front-end gig list template.
  *
- * Expected variables from ShortcodeController::render_gig_list():
+ * Expected view bag from ShortcodeController::render_gig_list():
+ * data, options, current_url, date_format, show_details, show_toggle,
+ * show_credit, wrapper_classes, wrapper_style, list_layout, archive_per_page, hide_title.
  *
  * @package TributeCityGigList
  *
- * @var mixed                $data            API response.
- * @var array<string, mixed> $options         Request options.
- * @var string               $current_url     Base page URL.
- * @var string               $date_format     WP date format.
- * @var bool                 $show_details    Whether to show detail links.
- * @var bool                 $show_toggle     Whether to show archive/current toggle.
- * @var bool                 $show_credit     Whether to show optional credit link.
- * @var string               $wrapper_classes CSS classes for root element.
- * @var string               $wrapper_style   Inline CSS variables for root element.
- * @var string               $list_layout      Active layout slug (table|cards|list|archive-table).
- * @var int                  $archive_per_page Rows per page for interactive archive table.
+ * @var array<string, mixed> $tributecity_gig_list_view Template variables.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$is_archive   = ! empty( $options['archive'] );
-$has_message  = is_object( $data ) && isset( $data->message );
-$has_listings = is_array( $data ) && ! empty( $data ) && ! $has_message;
-$show_toggle  = isset( $show_toggle ) ? (bool) $show_toggle : empty( $options['user_limit'] );
-$show_details = isset( $show_details ) ? (bool) $show_details : true;
-$archive_per_page = isset( $archive_per_page ) ? max( 5, (int) $archive_per_page ) : 15;
-
-if ( empty( $wrapper_classes ) ) {
-	$wrapper_classes = 'tributecity-gig-list';
-}
-
-if ( empty( $wrapper_style ) ) {
-	$wrapper_style = '';
-}
-
-if ( empty( $list_layout ) ) {
-	$list_layout = 'table';
-}
-
-$media_base = \TributeCity\GigList\Base\TributeCityApi::MEDIA_BASE_URL;
-
 /**
- * Normalize gig objects for all layouts.
+ * Render the gig list markup in local scope (Plugin Check PrefixAllGlobals).
  *
- * @param object $gig Gig payload.
- * @return array<string, mixed>
+ * @param array<string, mixed> $tributecity_gig_list_view View variables.
+ * @return void
  */
-$normalize_gig = static function ( $gig ) use ( $date_format, $show_details, $current_url, $media_base ) {
-	$start_ts  = ! empty( $gig->start_date ) ? strtotime( (string) $gig->start_date ) : false;
-	$date_text = $start_ts ? wp_date( $date_format, $start_ts ) : '';
-	$location  = trim(
-		( isset( $gig->location ) ? (string) $gig->location : '' ) .
-		( ! empty( $gig->country ) ? ', ' . (string) $gig->country : '' )
-	);
+( static function ( array $tributecity_gig_list_view ): void {
+	$data             = $tributecity_gig_list_view['data'] ?? null;
+	$options          = isset( $tributecity_gig_list_view['options'] ) && is_array( $tributecity_gig_list_view['options'] )
+		? $tributecity_gig_list_view['options']
+		: array();
+	$current_url      = isset( $tributecity_gig_list_view['current_url'] ) ? (string) $tributecity_gig_list_view['current_url'] : '';
+	$date_format      = isset( $tributecity_gig_list_view['date_format'] ) ? (string) $tributecity_gig_list_view['date_format'] : '';
+	$show_details     = ! empty( $tributecity_gig_list_view['show_details'] );
+	$show_toggle      = ! empty( $tributecity_gig_list_view['show_toggle'] );
+	$show_credit      = ! empty( $tributecity_gig_list_view['show_credit'] );
+	$wrapper_classes  = isset( $tributecity_gig_list_view['wrapper_classes'] ) ? (string) $tributecity_gig_list_view['wrapper_classes'] : 'tributecity-gig-list';
+	$wrapper_style    = isset( $tributecity_gig_list_view['wrapper_style'] ) ? (string) $tributecity_gig_list_view['wrapper_style'] : '';
+	$list_layout      = isset( $tributecity_gig_list_view['list_layout'] ) ? (string) $tributecity_gig_list_view['list_layout'] : 'table';
+	$archive_per_page = isset( $tributecity_gig_list_view['archive_per_page'] ) ? max( 5, (int) $tributecity_gig_list_view['archive_per_page'] ) : 15;
+	$hide_title       = ! empty( $tributecity_gig_list_view['hide_title'] );
 
-	$detail_url = '';
-	if ( $show_details && ! empty( $gig->gig_id ) ) {
-		$detail_url = add_query_arg( 'gig_id', sanitize_key( (string) $gig->gig_id ), $current_url );
+	$is_archive   = ! empty( $options['archive'] );
+	$has_message  = is_object( $data ) && isset( $data->message );
+	$has_listings = is_array( $data ) && ! empty( $data ) && ! $has_message;
+
+	if ( '' === $wrapper_classes ) {
+		$wrapper_classes = 'tributecity-gig-list';
 	}
 
-	// Posters for current-list layouts when the API provides one (including limit teasers).
-	$poster_url = '';
-	if ( $show_details && ! empty( $gig->poster ) ) {
-		$poster_url = $media_base . ltrim( (string) $gig->poster, '/' );
+	if ( '' === $list_layout ) {
+		$list_layout = 'table';
 	}
 
-	$venue = isset( $gig->venue_name ) ? (string) $gig->venue_name : '';
+	$media_base = \TributeCity\GigList\Base\TributeCityApi::MEDIA_BASE_URL;
 
-	$start_iso = '';
-	if ( ! empty( $gig->start_date ) ) {
-		$iso_raw = (string) $gig->start_date . ( ! empty( $gig->start_time ) ? ' ' . (string) $gig->start_time : '' );
-		$iso_ts  = strtotime( $iso_raw );
-		if ( $iso_ts ) {
-			$start_iso = wp_date( 'c', $iso_ts );
+	/**
+	 * Normalize gig objects for all layouts.
+	 *
+	 * @param object $gig Gig payload.
+	 * @return array<string, mixed>
+	 */
+	$normalize_gig = static function ( $gig ) use ( $date_format, $show_details, $current_url, $media_base ) {
+		$start_ts  = ! empty( $gig->start_date ) ? strtotime( (string) $gig->start_date ) : false;
+		$date_text = $start_ts ? wp_date( $date_format, $start_ts ) : '';
+		$location  = trim(
+			( isset( $gig->location ) ? (string) $gig->location : '' ) .
+			( ! empty( $gig->country ) ? ', ' . (string) $gig->country : '' )
+		);
+
+		$detail_url = '';
+		if ( $show_details && ! empty( $gig->gig_id ) ) {
+			$detail_url = add_query_arg( 'gig_id', sanitize_key( (string) $gig->gig_id ), $current_url );
 		}
-	}
 
-	return array(
-		'name'       => isset( $gig->gig_name ) ? (string) $gig->gig_name : '',
-		'date'       => $date_text,
-		'location'   => $location,
-		'venue'      => $venue,
-		'detail_url' => $detail_url,
-		'poster_url' => $poster_url,
-		'gig_id'     => isset( $gig->gig_id ) ? (string) $gig->gig_id : '',
-		'start_iso'  => $start_iso,
-	);
-};
-?>
+		// Posters for current-list layouts when the API provides one (including limit teasers).
+		$poster_url = '';
+		if ( $show_details && ! empty( $gig->poster ) ) {
+			$poster_url = $media_base . ltrim( (string) $gig->poster, '/' );
+		}
+
+		$venue = isset( $gig->venue_name ) ? (string) $gig->venue_name : '';
+
+		$start_iso = '';
+		if ( ! empty( $gig->start_date ) ) {
+			$iso_raw = (string) $gig->start_date . ( ! empty( $gig->start_time ) ? ' ' . (string) $gig->start_time : '' );
+			$iso_ts  = strtotime( $iso_raw );
+			if ( $iso_ts ) {
+				$start_iso = wp_date( 'c', $iso_ts );
+			}
+		}
+
+		return array(
+			'name'       => isset( $gig->gig_name ) ? (string) $gig->gig_name : '',
+			'date'       => $date_text,
+			'location'   => $location,
+			'venue'      => $venue,
+			'detail_url' => $detail_url,
+			'poster_url' => $poster_url,
+			'gig_id'     => isset( $gig->gig_id ) ? (string) $gig->gig_id : '',
+			'start_iso'  => $start_iso,
+		);
+	};
+
+	// When embedded under a theme heading (hide_title), keep a stable landmark without a visible H2.
+	$heading_id = $hide_title ? '' : 'tributecity-gig-list-heading';
+	?>
 <section
-	class="<?php echo esc_attr( $wrapper_classes ); ?>"
-	data-tcgl-v="2.5.3"
-	aria-labelledby="tributecity-gig-list-heading"
+	class="<?php echo esc_attr( $wrapper_classes . ( $hide_title ? ' tributecity-gig-list--hide-title' : '' ) ); ?>"
+	data-tcgl-v="2.5.5"
+	<?php echo $heading_id ? ' aria-labelledby="' . esc_attr( $heading_id ) . '"' : ' aria-label="' . esc_attr( $is_archive ? __( 'Archived show listings', 'tributecity-gig-list' ) : __( 'Current show listings', 'tributecity-gig-list' ) ) . '"'; ?>
 	<?php echo $wrapper_style ? ' style="' . esc_attr( $wrapper_style ) . '"' : ''; ?>
 >
+	<?php if ( ! $hide_title ) : ?>
 	<h2 class="tributecity-gig-list__heading" id="tributecity-gig-list-heading">
 		<?php
 		echo $is_archive
@@ -103,6 +114,7 @@ $normalize_gig = static function ( $gig ) use ( $date_format, $show_details, $cu
 			: esc_html__( 'Current show listings', 'tributecity-gig-list' );
 		?>
 	</h2>
+	<?php endif; ?>
 
 	<?php if ( ! $has_listings ) : ?>
 		<div class="tributecity-gig-list__empty">
@@ -215,6 +227,7 @@ $normalize_gig = static function ( $gig ) use ( $date_format, $show_details, $cu
 				}
 				$row = $normalize_gig( $gig );
 				echo '<div class="tributecity-gig-list__cards-item" role="listitem">';
+				// Partial expects $row in requiring scope; it scopes its own locals.
 				require TRIBUTECITY_GIG_LIST_PATH . 'templates/partials/card-item.php';
 				echo '</div>';
 				?>
@@ -350,3 +363,5 @@ $normalize_gig = static function ( $gig ) use ( $date_format, $show_details, $cu
 	echo \TributeCity\GigList\Base\Seo::list_json_ld( $has_listings ? $data : array(), $current_url, $is_archive );
 	?>
 </section>
+	<?php
+} )( isset( $tributecity_gig_list_view ) && is_array( $tributecity_gig_list_view ) ? $tributecity_gig_list_view : array() );

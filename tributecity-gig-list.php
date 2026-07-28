@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name:       TributeCity Gig List
- * Plugin URI:        https://tributecity.com
+ * Plugin URI:        https://github.com/themasterpage/tributecity-gig-list
  * Description:       Display live and archived show listings from a TributeCity Pro band account via shortcode.
- * Version:           2.5.3
+ * Version:           2.5.5
  * Requires at least: 6.0
  * Requires PHP:      7.4
- * Author:            Lenny Mann
- * Author URI:        https://themasterpage.net
+ * Author:            TributeCity
+ * Author URI:        https://tributecity.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       tributecity-gig-list
@@ -15,7 +15,7 @@
  *
  * @package TributeCityGigList
  *
- * Copyright (C) 2022-2026 Lenny Mann (lenny@themasterpage.net)
+ * Copyright (C) 2022-2026 TributeCity
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'TRIBUTECITY_GIG_LIST_VERSION', '2.5.3' );
+define( 'TRIBUTECITY_GIG_LIST_VERSION', '2.5.5' );
 define( 'TRIBUTECITY_GIG_LIST_FILE', __FILE__ );
 define( 'TRIBUTECITY_GIG_LIST_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TRIBUTECITY_GIG_LIST_URL', plugin_dir_url( __FILE__ ) );
@@ -73,11 +73,7 @@ register_deactivation_hook( __FILE__, 'tributecity_gig_list_deactivate' );
  * @return void
  */
 function tributecity_gig_list_init() {
-	load_plugin_textdomain(
-		'tributecity-gig-list',
-		false,
-		dirname( TRIBUTECITY_GIG_LIST_BASENAME ) . '/languages'
-	);
+	// Translations load automatically for plugins hosted on WordPress.org (WP 4.6+).
 
 	if ( class_exists( 'TributeCity\\GigList\\Plugin' ) ) {
 		TributeCity\GigList\Plugin::register_services();

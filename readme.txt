@@ -2,9 +2,9 @@
 Contributors: themasterpage
 Tags: gigs, events, concerts, tribute band, shortcode
 Requires at least: 6.0
-Tested up to: 6.8
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.5.3
+Stable tag: 2.5.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,15 @@ No. Credit is optional and off by default (WordPress.org Guideline 10).
 3. Single show detail view.
 
 == Changelog ==
+
+= 2.5.5 =
+* New: shortcode attribute hide_title="1" to omit the list H2 when a theme already provides a section heading (avoids duplicate “Upcoming Shows” / “Current show listings” on mobile).
+* Admin: About tab shortcode copy-to-clipboard controls; Band ID limited to 10 numeric digits.
+* Plugin Check / directory readiness: Tested up to 7.0; scoped template variables; prefixed uninstall locals; remove manual load_plugin_textdomain().
+* Plugin author metadata set to TributeCity.
+
+= 2.5.4 =
+* SEO: Complete Event JSON-LD offers for Google Search Console (price, priceCurrency, availability, validFrom). Free shows and events without a ticket URL now emit a full Offer. Add eventStatus and eventAttendanceMode.
 
 = 2.5.3 =
 * Fix: Mobile card list posters were cropped/zoomed (`object-fit: cover` + fixed min-height). Stacked cards now show the full flyer at natural aspect ratio, matching the detail view.

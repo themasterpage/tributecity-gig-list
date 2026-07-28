@@ -6,7 +6,37 @@
  */
 
 defined( 'ABSPATH' ) || exit;
-?>
+
+/**
+ * Render About tab in local scope (Plugin Check PrefixAllGlobals).
+ *
+ * @return void
+ */
+( static function (): void {
+	/**
+	 * Render a shortcode snippet with a copy-to-clipboard control.
+	 *
+	 * @param string $shortcode Shortcode text to display and copy.
+	 * @return void
+	 */
+	$render_shortcode_copy = static function ( string $shortcode ): void {
+		?>
+	<span class="tributecity-shortcode-copy">
+		<code class="tributecity-shortcode-copy__code"><?php echo esc_html( $shortcode ); ?></code>
+		<button
+			type="button"
+			class="tributecity-shortcode-copy__btn"
+			data-copy="<?php echo esc_attr( $shortcode ); ?>"
+			aria-label="<?php echo esc_attr( sprintf( /* translators: %s: shortcode text */ __( 'Copy %s', 'tributecity-gig-list' ), $shortcode ) ); ?>"
+			title="<?php esc_attr_e( 'Copy to clipboard', 'tributecity-gig-list' ); ?>"
+		>
+			<span class="dashicons dashicons-clipboard" aria-hidden="true"></span>
+			<span class="screen-reader-text"><?php esc_html_e( 'Copy to clipboard', 'tributecity-gig-list' ); ?></span>
+		</button>
+	</span>
+		<?php
+	};
+	?>
 <div class="tributecity-gig-list-about">
 	<p>
 		<?php
@@ -17,23 +47,19 @@ defined( 'ABSPATH' ) || exit;
 		?>
 	</p>
 
-	<h2><?php esc_html_e( 'Shortcode', 'tributecity-gig-list' ); ?></h2>
+	<h2><?php esc_html_e( 'Shortcodes', 'tributecity-gig-list' ); ?></h2>
 	<p>
 		<?php
 		echo esc_html__(
-			'Add one of the following shortcodes to any page or post:',
+			'Add the following shortcode to any page or post:',
 			'tributecity-gig-list'
 		);
 		?>
 	</p>
 	<ul>
 		<li>
-			<code>[tributecity_gigs]</code>
-			— <?php esc_html_e( 'Current show listings (recommended).', 'tributecity-gig-list' ); ?>
-		</li>
-		<li>
-			<code>[tributecity-gigs]</code>
-			— <?php esc_html_e( 'Legacy shortcode tag (still supported).', 'tributecity-gig-list' ); ?>
+			<?php $render_shortcode_copy( '[tributecity_gigs]' ); ?>
+			— <?php esc_html_e( 'Current show listings.', 'tributecity-gig-list' ); ?>
 		</li>
 	</ul>
 
@@ -50,22 +76,22 @@ defined( 'ABSPATH' ) || exit;
 			<tr>
 				<td><code>limit</code></td>
 				<td><?php esc_html_e( 'Maximum number of shows to display. Posters and detail links still appear; the archive toggle is hidden.', 'tributecity-gig-list' ); ?></td>
-				<td><code>[tributecity_gigs limit="5"]</code></td>
+				<td><?php $render_shortcode_copy( '[tributecity_gigs limit="5"]' ); ?></td>
 			</tr>
 			<tr>
 				<td><code>archive</code></td>
 				<td><?php esc_html_e( 'Show archived listings instead of upcoming shows.', 'tributecity-gig-list' ); ?></td>
-				<td><code>[tributecity_gigs archive="1"]</code></td>
+				<td><?php $render_shortcode_copy( '[tributecity_gigs archive="1"]' ); ?></td>
 			</tr>
 			<tr>
 				<td><code>gig_id</code></td>
 				<td><?php esc_html_e( 'Display a single show by ID.', 'tributecity-gig-list' ); ?></td>
-				<td><code>[tributecity_gigs gig_id="123"]</code></td>
+				<td><?php $render_shortcode_copy( '[tributecity_gigs gig_id="123"]' ); ?></td>
 			</tr>
 			<tr>
 				<td><code>layout</code></td>
 				<td><?php esc_html_e( 'List layout override: table, cards, or list.', 'tributecity-gig-list' ); ?></td>
-				<td><code>[tributecity_gigs layout="cards"]</code></td>
+				<td><?php $render_shortcode_copy( '[tributecity_gigs layout="cards"]' ); ?></td>
 			</tr>
 		</tbody>
 	</table>
@@ -87,3 +113,5 @@ defined( 'ABSPATH' ) || exit;
 		</a>
 	</p>
 </div>
+	<?php
+} )();

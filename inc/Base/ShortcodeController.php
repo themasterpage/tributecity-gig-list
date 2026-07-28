@@ -33,6 +33,7 @@ class ShortcodeController extends BaseController {
 	 * - archive (bool): Show archived gigs (also accepts ?archive= query arg).
 	 * - limit (int): Limit number of gigs returned.
 	 * - layout (string): table|cards|list — overrides the Styling tab default for this shortcode.
+	 * - hide_title (bool): Hide the list H2 when the host theme supplies its own heading.
 	 *
 	 * @param array<string, mixed>|string $atts Shortcode attributes.
 	 * @return string
@@ -42,11 +43,12 @@ class ShortcodeController extends BaseController {
 
 		$atts = shortcode_atts(
 			array(
-				'gig_id'   => '',
-				'archive'  => '',
-				'limit'    => '',
-				'layout'   => '',
-				'base_url' => '',
+				'gig_id'     => '',
+				'archive'    => '',
+				'limit'      => '',
+				'layout'     => '',
+				'base_url'   => '',
+				'hide_title' => '',
 			),
 			(array) $atts,
 			'tributecity_gigs'
@@ -65,11 +67,12 @@ class ShortcodeController extends BaseController {
 		}
 
 		$options = array(
-			'gig_id'   => sanitize_key( (string) $atts['gig_id'] ),
-			'archive'  => self::to_bool( $atts['archive'] ),
-			'limit'    => absint( $atts['limit'] ),
-			'layout'   => sanitize_key( (string) $atts['layout'] ),
-			'base_url' => esc_url_raw( (string) $atts['base_url'] ),
+			'gig_id'     => sanitize_key( (string) $atts['gig_id'] ),
+			'archive'    => self::to_bool( $atts['archive'] ),
+			'limit'      => absint( $atts['limit'] ),
+			'layout'     => sanitize_key( (string) $atts['layout'] ),
+			'base_url'   => esc_url_raw( (string) $atts['base_url'] ),
+			'hide_title' => self::to_bool( $atts['hide_title'] ),
 		);
 
 		// Explicit shortcode limit (e.g. limit="5").
@@ -109,6 +112,7 @@ class ShortcodeController extends BaseController {
 	 */
 	public function render_gig_list( $data, array $options ): string {
 		$is_archive      = ! empty( $options['archive'] );
+		$hide_title      = ! empty( $options['hide_title'] );
 		$layout_override = ! empty( $options['layout'] ) ? (string) $options['layout'] : null;
 		$list_layout     = StyleManager::get_active_layout( $layout_override );
 		$current_url     = ! empty( $options['base_url'] )
@@ -144,8 +148,23 @@ class ShortcodeController extends BaseController {
 		}
 		$wrapper_style = StyleManager::get_wrapper_style_attr();
 
+		// Prefixed bag so template file scope stays Plugin Check–clean.
+		$tributecity_gig_list_view = array(
+			'data'             => $data,
+			'options'          => $options,
+			'current_url'      => $current_url,
+			'date_format'      => $date_format,
+			'show_details'     => $show_details,
+			'show_toggle'      => $show_toggle,
+			'show_credit'      => $show_credit,
+			'wrapper_classes'  => $wrapper_classes,
+			'wrapper_style'    => $wrapper_style,
+			'list_layout'      => $list_layout,
+			'archive_per_page' => $archive_per_page,
+			'hide_title'       => $hide_title,
+		);
+
 		ob_start();
-		// Variables intentionally available to the template.
 		require $this->plugin_path . 'templates/gig-list.php';
 		return (string) ob_get_clean();
 	}
@@ -199,6 +218,19 @@ class ShortcodeController extends BaseController {
 			$raw_price,
 			! empty( $gig->sold_out ),
 			! empty( $gig->free )
+		);
+
+		// Prefixed bag so template file scope stays Plugin Check–clean.
+		$tributecity_gig_list_view = array(
+			'gig'             => $gig,
+			'date_time'       => $date_time,
+			'display_price'   => $display_price,
+			'hide_title'      => $hide_title,
+			'media_base'      => $media_base,
+			'list_url'        => $list_url,
+			'show_credit'     => $show_credit,
+			'wrapper_classes' => $wrapper_classes,
+			'wrapper_style'   => $wrapper_style,
 		);
 
 		ob_start();

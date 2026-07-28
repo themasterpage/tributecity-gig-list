@@ -171,28 +171,11 @@ class Seo {
 			$event['location'] = $place;
 		}
 
-		$offers = array();
-		if ( ! empty( $gig->ticket_url ) ) {
-			$offer = array(
-				'@type' => 'Offer',
-				'url'   => esc_url_raw( (string) $gig->ticket_url ),
-			);
-			if ( ! empty( $gig->free ) ) {
-				$offer['price']         = '0';
-				$offer['priceCurrency'] = 'USD';
-			} elseif ( ! empty( $gig->ticket_price ) ) {
-				$offer['price'] = (string) $gig->ticket_price;
-			}
-			if ( ! empty( $gig->sold_out ) ) {
-				$offer['availability'] = 'https://schema.org/SoldOut';
-			} else {
-				$offer['availability'] = 'https://schema.org/InStock';
-			}
-			$offers[] = $offer;
-		}
-		if ( ! empty( $offers ) ) {
-			$event['offers'] = $offers;
-		}
+		// Recommended Event rich-result fields (GSC non-critical warnings when missing).
+		$event['eventStatus']         = ! empty( $gig->cancelled )
+			? 'https://schema.org/EventCancelled'
+			: 'https://schema.org/EventScheduled';
+		$event['eventAttendanceMode'] = 'https://schema.org/OfflineEventAttendanceMode';
 
 		if ( ! empty( $gig->poster ) ) {
 			$event['image'] = TributeCityApi::MEDIA_BASE_URL . ltrim( (string) $gig->poster, '/' );
@@ -200,6 +183,66 @@ class Seo {
 
 		if ( ! empty( $gig->event_url ) ) {
 			$event['sameAs'] = array( esc_url_raw( (string) $gig->event_url ) );
+		}
+
+		// Complete Offer when tickets, free admission, or an external event page exists.
+		// GSC flags incomplete offers (price, priceCurrency, availability, validFrom).
+		$is_free    = ! empty( $gig->free );
+		$offer_url  = '';
+		if ( ! empty( $gig->ticket_url ) ) {
+			$offer_url = esc_url_raw( (string) $gig->ticket_url );
+		} elseif ( ! empty( $gig->event_url ) ) {
+			$offer_url = esc_url_raw( (string) $gig->event_url );
+		} elseif ( ! empty( $event['url'] ) ) {
+			$offer_url = (string) $event['url'];
+		}
+
+		if ( $offer_url || $is_free ) {
+			$currency = ! empty( $gig->ticket_currency )
+				? strtoupper( sanitize_text_field( (string) $gig->ticket_currency ) )
+				: 'USD';
+			if ( ! preg_match( '/^[A-Z]{3}$/', $currency ) ) {
+				$currency = 'USD';
+			}
+
+			// Stable validFrom: ticket on-sale date, else ~90 days before start, else now.
+			$valid_from = '';
+			if ( ! empty( $gig->tickets_on_sale ) ) {
+				$sale_ts = strtotime( (string) $gig->tickets_on_sale );
+				if ( $sale_ts ) {
+					$valid_from = wp_date( 'c', $sale_ts );
+				}
+			}
+			if ( ! $valid_from && $start ) {
+				$start_ts = strtotime( $start );
+				if ( $start_ts ) {
+					$valid_from = wp_date( 'c', $start_ts - ( 90 * DAY_IN_SECONDS ) );
+				}
+			}
+			if ( ! $valid_from ) {
+				$valid_from = gmdate( 'c' );
+			}
+
+			$offer = array(
+				'@type'         => 'Offer',
+				'url'           => $offer_url ?: ( ! empty( $event['url'] ) ? (string) $event['url'] : home_url( '/' ) ),
+				'priceCurrency' => $currency,
+				'availability'  => ! empty( $gig->sold_out )
+					? 'https://schema.org/SoldOut'
+					: 'https://schema.org/InStock',
+				'validFrom'     => $valid_from,
+			);
+
+			if ( $is_free ) {
+				$offer['price'] = 0;
+			} elseif ( isset( $gig->ticket_price ) && '' !== $gig->ticket_price && null !== $gig->ticket_price ) {
+				// Lowest available ticket price (number; Google prefers numeric).
+				$offer['price'] = is_numeric( $gig->ticket_price )
+					? 0 + $gig->ticket_price
+					: (string) $gig->ticket_price;
+			}
+
+			$event['offers'] = $offer;
 		}
 
 		/**

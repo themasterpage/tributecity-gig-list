@@ -5,9 +5,8 @@
 	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
-			"name": "Lenny Mann",
-			"email": "lenny@themasterpage.net",
-			"homepage": "https://themasterpage.net"
+			"name": "TributeCity",
+			"homepage": "https://tributecity.com"
 		}
 	],
 	"require": {

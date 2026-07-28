@@ -9,7 +9,7 @@
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
-$tributecity_options = array(
+$tributecity_gig_list_options = array(
 	'tributecity_band_id',
 	'tributecity_token',
 	'tributecity_hide_title',
@@ -20,14 +20,14 @@ $tributecity_options = array(
 	'tributecity_font_size',
 );
 
-foreach ( $tributecity_options as $option_name ) {
-	delete_option( $option_name );
+foreach ( $tributecity_gig_list_options as $tributecity_gig_list_option_name ) {
+	delete_option( $tributecity_gig_list_option_name );
 
 	// Multisite: remove per-site options if network-wide uninstall.
 	if ( is_multisite() ) {
-		$sites = get_sites( array( 'fields' => 'ids' ) );
-		foreach ( $sites as $site_id ) {
-			delete_blog_option( (int) $site_id, $option_name );
+		$tributecity_gig_list_sites = get_sites( array( 'fields' => 'ids' ) );
+		foreach ( $tributecity_gig_list_sites as $tributecity_gig_list_site_id ) {
+			delete_blog_option( (int) $tributecity_gig_list_site_id, $tributecity_gig_list_option_name );
 		}
 	}
 }
